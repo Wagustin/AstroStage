@@ -22,7 +22,7 @@ export default async function handler(req: any, res: any) {
     // Determinar la URL base para cargar el logo desde la carpeta public/assets
     const host = req.headers['x-forwarded-host'] || req.headers.host || 'astrostage.vercel.app';
     const protocol = req.headers['x-forwarded-proto'] || 'https';
-    const logoUrl = `${protocol}://${host}/assets/logo-email.jpeg`;
+    const logoUrl = `${protocol}://${host}/assets/logo-email-square.jpeg`;
 
     const { data, error } = await resend.emails.send({
       from: 'AstroStage <sales-team@mail.astrostage.us.kg>', 
@@ -30,7 +30,7 @@ export default async function handler(req: any, res: any) {
       subject: '¡Bienvenido al futuro! Ya estás en la lista de AstroStage 🚀',
       html: `
         <div style="font-family: 'Inter', Helvetica, sans-serif; padding: 40px 20px; background-color: #030014; color: #ffffff; text-align: center; border-radius: 12px; max-width: 600px; margin: 0 auto;">
-          <img src="${logoUrl}" alt="AstroStage Logo" style="width: 150px; border-radius: 50%; border: 2px solid #00ffff; margin-bottom: 24px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);" />
+          <img src="${logoUrl}" alt="AstroStage Logo" style="width: 150px; border-radius: 8px; border: 2px solid #00ffff; margin-bottom: 24px; box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);" />
           
           <h2 style="color: #00ffff; font-size: 24px; margin-bottom: 16px; letter-spacing: 1px; font-weight: 800; text-transform: uppercase;">¡Gracias por unirte al proyecto!</h2>
           
@@ -51,7 +51,7 @@ export default async function handler(req: any, res: any) {
           </p>
           
           <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(0, 255, 255, 0.2);">
-            <p style="font-size: 14px; color: #888;">Nos vemos en la primera fila,</p>
+            <p style="font-size: 14px; color: #888;">Nos vemos en la primera fila ✨,</p>
             <p style="font-size: 16px; color: #00ffff; font-weight: bold; margin-top: 5px;">El equipo de AstroStage</p>
           </div>
         </div>
