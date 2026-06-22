@@ -48,8 +48,7 @@
           <p>El artista se proyecta holográficamente en tu propio espacio. Mezcla la música en vivo con tu entorno real gracias al Passthrough de alta resolución.</p>
         </div>
         <div class="simulator-display glass-panel">
-          <!-- AR video placeholder — same box, different video when ready -->
-          <video #experienceVideo autoplay loop muted playsinline [src]="'assets/vr-experience.mp4'"></video>
+          <video #experienceVideo autoplay loop muted playsinline [src]="'assets/ar-experience.mp4'"></video>
           <div class="audio-controls">
             <label class="toggleSwitch" (click)="toggleMute()">
               <span class="speaker" [style.opacity]="isMuted ? '0' : '1'">
