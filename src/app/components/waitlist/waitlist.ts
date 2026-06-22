@@ -60,7 +60,10 @@ export class Waitlist {
         },
         error: (err) => {
           console.error('Error suscribiendo:', err);
-          const backendError = err.error?.error || err.error?.details;
+          let backendError = err.error?.error || err.error?.details || err.message;
+          if (typeof backendError === 'object') {
+             backendError = JSON.stringify(backendError);
+          }
           this.errorMessage = backendError ? `Error: ${backendError}` : 'Hubo un problema al intentar unirte a la lista. Por favor, intenta de nuevo.';
           this.loading = false;
         }
