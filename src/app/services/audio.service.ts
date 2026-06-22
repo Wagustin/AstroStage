@@ -24,7 +24,7 @@ export class AudioService {
   private initBackgroundAudio() {
     this.backgroundAudio = new Audio('assets/nebula.mp3');
     this.backgroundAudio.loop = true;
-    this.backgroundAudio.volume = 0.18; // Reduced by 40%
+    this.backgroundAudio.volume = 0.09; // Reduced by another 50%
     console.log('[AudioService] Audio initialized, waiting for interaction...');
   }
 
@@ -60,7 +60,7 @@ export class AudioService {
     if (this.backgroundAudio) {
       // Fade in effect for volume increase
       let vol = this.backgroundAudio.volume;
-      const targetVol = 0.5; // reduced by 40%
+      const targetVol = 0.5; // Restored to 0.5 as requested
       const fadeInterval = setInterval(() => {
         if (vol < targetVol) {
           vol += 0.05;
