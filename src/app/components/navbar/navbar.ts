@@ -39,8 +39,25 @@ export class Navbar implements OnInit {
     this.el.nativeElement.style.setProperty('--mouse-y', `${y}px`);
   }
 
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+    if (this.isMenuOpen) {
+      document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+    document.body.style.overflow = '';
+  }
+
   scrollToSection(sectionId: string, event: Event) {
     event.preventDefault();
+    this.closeMenu();
     const element = document.getElementById(sectionId);
     if (element) {
       // Offset for fixed navbar (approx 80px)
