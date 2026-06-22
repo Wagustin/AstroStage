@@ -60,7 +60,8 @@ export class Waitlist {
         },
         error: (err) => {
           console.error('Error suscribiendo:', err);
-          this.errorMessage = 'Hubo un problema al intentar unirte a la lista. Por favor, intenta de nuevo.';
+          const backendError = err.error?.error || err.error?.details;
+          this.errorMessage = backendError ? `Error: ${backendError}` : 'Hubo un problema al intentar unirte a la lista. Por favor, intenta de nuevo.';
           this.loading = false;
         }
       });
