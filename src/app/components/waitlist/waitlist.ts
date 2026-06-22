@@ -2,6 +2,7 @@ import { Component, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-waitlist',
@@ -17,7 +18,12 @@ export class Waitlist {
   loading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private el: ElementRef) {
+  constructor(
+    private fb: FormBuilder, 
+    private http: HttpClient, 
+    private el: ElementRef,
+    private audioService: AudioService
+  ) {
     this.waitlistForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
@@ -46,6 +52,8 @@ export class Waitlist {
           this.submitted = false;
           this.loading = false;
           
+          this.audioService.registerUser();
+          
           setTimeout(() => {
             this.success = false;
           }, 4000);
@@ -59,3 +67,4 @@ export class Waitlist {
     }
   }
 }
+

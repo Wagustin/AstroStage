@@ -62,6 +62,20 @@ body {
   overflow-x: hidden;
 }
 
+/* Make sections solid to cover the sticky Hero background video when scrolling */
+app-simulator,
+app-features,
+app-alquiler,
+app-waitlist,
+app-nosotros,
+app-footer {
+  display: block;
+  position: relative;
+  background-color: var(--bg-primary);
+  z-index: 1; /* Above the video's z-index */
+}
+
+
 /* Elegant futuristic noise texture - detached from body background to fix transition lag */
 body::after {
   content: "";

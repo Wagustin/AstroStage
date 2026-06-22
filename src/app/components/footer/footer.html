@@ -1,7 +1,7 @@
 <footer class="footer-section">
   <div class="footer-content">
     <div class="footer-brand">
-      <a href="#" class="reactive-logo">AstroStage</a>
+      <a href="#" class="reactive-logo" (click)="scrollToSection('inicio', $event)">AstroStage</a>
       <p class="brand-desc">AstroStage 3D E.I.R.L.</p>
       <p class="brand-location">Pueblo Libre, Lima, Perú.</p>
     </div>
@@ -9,9 +9,9 @@
     <div class="footer-links">
       <div class="link-column">
         <h4>Plataforma</h4>
-        <a href="#vr">Experiencia VR</a>
-        <a href="#ar">Experiencia AR</a>
-        <a href="#alquiler">Renting de Visores</a>
+        <a href="#vr" (click)="scrollToSection('experiencia', $event)">Experiencia VR</a>
+        <a href="#ar" (click)="scrollToSection('experiencia', $event)">Experiencia AR</a>
+        <a href="#alquiler" (click)="scrollToSection('alquiler', $event)">Renting de Visores</a>
       </div>
       <div class="link-column">
         <h4>Legal</h4>

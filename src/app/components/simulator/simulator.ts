@@ -1,4 +1,6 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { AudioService } from '../../services/audio.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-simulator',
@@ -7,15 +9,35 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
   templateUrl: './simulator.html',
   styleUrl: './simulator.css',
 })
-export class Simulator implements AfterViewInit {
+export class Simulator implements OnInit, AfterViewInit, OnDestroy {
   activeTab: 'vr' | 'ar' = 'vr';
   isMuted = true;
   volume = 0.5;
+  private muteSub!: Subscription;
 
   @ViewChild('experienceVideo') videoRef!: ElementRef<HTMLVideoElement>;
 
+  constructor(private audioService: AudioService) {}
+
+  ngOnInit() {
+    this.muteSub = this.audioService.isGlobalMuted$.subscribe((shouldMute) => {
+      if (shouldMute) {
+        this.isMuted = true;
+        if (this.videoRef?.nativeElement) {
+          this.videoRef.nativeElement.muted = true;
+        }
+      }
+    });
+  }
+
   ngAfterViewInit() {
     this.syncVideo();
+  }
+
+  ngOnDestroy() {
+    if (this.muteSub) {
+      this.muteSub.unsubscribe();
+    }
   }
 
   setTab(tab: 'vr' | 'ar') {
@@ -57,3 +79,4 @@ export class Simulator implements AfterViewInit {
     }
   }
 }
+

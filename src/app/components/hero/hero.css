@@ -2,7 +2,62 @@
 
 .hero-container {
   position: relative;
+  width: 100%;
+  min-height: 200vh; /* 100vh for slogan/blur, 100vh for clear video viewing */
+  display: block;
+}
+
+/* Parallax Background Video (Always clear) */
+.hero-bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* The lid that blurs the video initially */
+.hero-blur-lid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  backdrop-filter: blur(8px) brightness(0.6);
+  -webkit-backdrop-filter: blur(8px) brightness(0.6);
+  z-index: 1;
+}
+
+:host-context(.light-theme) .hero-blur-lid {
+  backdrop-filter: blur(8px) brightness(0.85);
+  -webkit-backdrop-filter: blur(8px) brightness(0.85);
+}
+
+.hero-content-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  padding-top: 5rem; /* Moves the slogan down away from the navbar */
   z-index: 2;
+}
+
+@media (max-width: 1024px) {
+  .hero-content-wrapper {
+    padding-top: 12rem; /* Move it even further down on narrow screens */
+  }
+}
+
+.hero-content {
+  position: relative;
   text-align: center;
   max-width: 900px;
 }
@@ -10,6 +65,7 @@
 :host {
   --mouse-x: 50%;
   --mouse-y: 50%;
+  display: block;
 }
 
 .hero-title {
@@ -70,6 +126,11 @@
   font-weight: 400;
   margin-bottom: 3rem;
   line-height: 1.5;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* added text shadow for contrast against video */
+}
+
+:host-context(.light-theme) .hero-subtitle {
+  text-shadow: none; /* No shadow needed in light mode if video is bright, or maybe soft white shadow */
 }
 
 .hero-actions {
@@ -131,15 +192,4 @@
 
 .icon {
   font-size: 0.9rem;
-}
-
-:host {
-  display: block;
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 0 2rem;
 }

@@ -8,6 +8,8 @@ import { Waitlist } from './components/waitlist/waitlist';
 import { Nosotros } from './components/nosotros/nosotros';
 import { Footer } from './components/footer/footer';
 
+import { AudioService } from './services/audio.service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -16,6 +18,8 @@ import { Footer } from './components/footer/footer';
   styleUrl: './app.css',
 })
 export class App implements AfterViewInit {
+  constructor(private audioService: AudioService) {}
+
   ngAfterViewInit() {
     // Scroll Reveal Observer
     const observer = new IntersectionObserver((entries) => {
