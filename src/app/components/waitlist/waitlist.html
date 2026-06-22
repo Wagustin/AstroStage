@@ -1,0 +1,38 @@
+<section class="waitlist-section" id="beta">
+  <div class="waitlist-container glass-panel">
+    <div class="waitlist-content">
+      <h2 class="section-title text-gradient">Únete a la Beta.</h2>
+      <p class="section-subtitle">Asegura tu acceso anticipado a la plataforma y experimenta el futuro de los conciertos antes del lanzamiento global.</p>
+      
+      <form [formGroup]="waitlistForm" (ngSubmit)="onSubmit()" class="waitlist-form">
+        <div class="input-group">
+          <input 
+            type="email" 
+            formControlName="email" 
+            placeholder="Tu correo electrónico" 
+            class="email-input"
+            [class.invalid]="submitted && waitlistForm.get('email')?.invalid"
+            [disabled]="loading"
+          >
+          <button type="submit" class="btn-primary" [disabled]="loading">
+            {{ loading ? 'Enviando...' : 'Solicitar Acceso' }}
+          </button>
+        </div>
+        
+        @if (submitted && waitlistForm.get('email')?.invalid) {
+          <div class="error-msg">Por favor ingresa un correo válido.</div>
+        }
+        
+        @if (errorMessage) {
+          <div class="error-msg">{{ errorMessage }}</div>
+        }
+        
+        @if (success) {
+          <div class="success-msg">
+            ✨ ¡Gracias! Te has unido a la lista de espera correctamente. Revisa tu bandeja de entrada.
+          </div>
+        }
+      </form>
+    </div>
+  </div>
+</section>

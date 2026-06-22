@@ -1,0 +1,36 @@
+<nav class="navbar">
+  <div class="logo-container">
+    <a routerLink="/" class="reactive-logo">AstroStage</a>
+  </div>
+  
+  <ul class="nav-links">
+    <li><a href="#" (click)="scrollToSection('experiencia', $event)">Experiencia</a></li>
+    <li><a href="#" (click)="scrollToSection('tecnologia', $event)">Tecnología</a></li>
+    <li><a href="#" (click)="scrollToSection('alquiler', $event)">Alquiler</a></li>
+    <li><a href="#" (click)="scrollToSection('nosotros', $event)">Nosotros</a></li>
+  </ul>
+  
+  <div class="nav-actions">
+    <label class="theme-switch" aria-label="Toggle Theme">
+      <input type="checkbox" class="theme-switch__checkbox" [checked]="!isLightTheme" (change)="toggleTheme()">
+      <div class="theme-switch__container">
+        <div class="theme-switch__clouds"></div>
+        <div class="theme-switch__stars-container">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 55" fill="none">
+            <path fill="currentColor" d="M12.5 0l2.5 8 8 2.5-8 2.5-2.5 8-2.5-8-8-2.5 8-2.5 2.5-8zM42.5 15l1.5 5 5 1.5-5 1.5-1.5 5-1.5-5-5-1.5 5-1.5 1.5-5zM102.5 5l2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6zM132.5 25l1.5 5 5 1.5-5 1.5-1.5 5-1.5-5-5-1.5 5-1.5 1.5-5z" />
+          </svg>
+        </div>
+        <div class="theme-switch__circle-container">
+          <div class="theme-switch__sun-moon-container">
+            <div class="theme-switch__moon">
+              <div class="theme-switch__spot"></div>
+              <div class="theme-switch__spot"></div>
+              <div class="theme-switch__spot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </label>
+    <button class="btn-primary" (click)="scrollToSection('beta', $event)">Unirse a la Beta</button>
+  </div>
+</nav>

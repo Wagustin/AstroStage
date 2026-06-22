@@ -1,0 +1,100 @@
+:host {
+  display: block;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-glass);
+}
+
+.footer-section {
+  padding: 4rem 5% 2rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4rem;
+  margin-bottom: 4rem;
+}
+
+.footer-brand {
+  flex: 1;
+  min-width: 250px;
+}
+
+.reactive-logo {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: transparent;
+  transition: text-shadow 0.5s ease, transform 0.5s ease;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.reactive-logo:hover {
+  animation: logoGlow 2s ease-in-out infinite alternate;
+  transform: scale(1.05);
+}
+
+@keyframes logoGlow {
+  0% {
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(0, 242, 254, 0.8), 0 0 10px rgba(127, 0, 255, 0.5);
+  }
+}
+
+.brand-desc {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.brand-location {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.link-column h4 {
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.link-column a {
+  display: block;
+  color: var(--text-secondary);
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.link-column a:hover {
+  color: var(--accent-cyan);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-glass);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}

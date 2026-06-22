@@ -1,0 +1,35 @@
+<section class="simulator-section">
+  <div class="simulator-header">
+    <h2 class="section-title text-gradient">Experimenta la Diferencia</h2>
+    <p class="section-subtitle">Tu próximo concierto, más cerca que nunca.</p>
+  </div>
+  
+  <div class="simulator-tabs reveal">
+    <button class="tab-btn" [class.active]="activeTab === 'vr'" (click)="setTab('vr')">Virtual Reality</button>
+    <button class="tab-btn" [class.active]="activeTab === 'ar'" (click)="setTab('ar')">Augmented Reality</button>
+  </div>
+
+  <div class="simulator-content reveal">
+    @if (activeTab === 'vr') {
+      <div class="experience-block">
+        <div class="experience-text">
+          <h3>Inmersión Total 360°</h3>
+          <p>Transpórtate al estadio. Siente la energía de la multitud y disfruta del concierto desde la primera fila, sin importar dónde estés.</p>
+        </div>
+        <div class="simulator-display glass-panel">
+          <div class="display-content vr-view"></div>
+        </div>
+      </div>
+    } @else {
+      <div class="experience-block">
+        <div class="experience-text">
+          <h3>Tu Sala es el Escenario</h3>
+          <p>El artista se proyecta holográficamente en tu propio espacio. Mezcla la música en vivo con tu entorno real gracias al Passthrough de alta resolución.</p>
+        </div>
+        <div class="simulator-display glass-panel">
+          <div class="display-content ar-view"></div>
+        </div>
+      </div>
+    }
+  </div>
+</section>
