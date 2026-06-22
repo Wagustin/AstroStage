@@ -41,26 +41,26 @@
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0.75rem 2rem;
+  padding: 1.2rem 3rem; /* Increased padding */
 }
 
 .reactive-logo {
   font-family: var(--font-title);
-  font-size: 1.5rem;
+  font-size: 1.8rem; /* Larger logo */
   font-weight: 800;
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 2px;
   padding: 0.5rem 1rem;
   background: transparent;
-  transition: text-shadow 0.5s ease, transform 0.5s ease;
+  transition: text-shadow 0.3s ease, transform 0.3s ease;
   position: relative;
   display: inline-block;
 }
 
 .reactive-logo:hover {
   animation: logoGlow 2s ease-in-out infinite alternate;
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 @keyframes logoGlow {
@@ -78,8 +78,8 @@
 
 .nav-links a {
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 1.05rem; /* Slightly larger text */
+  font-weight: 600;
   transition: color 0.2s ease;
 }
 
@@ -90,15 +90,15 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
 
 /* Theme Toggle — adapted from Uiverse.io by andrew-demchenk0 */
 .switch {
   position: relative;
   display: inline-block;
-  width: 52px;
-  height: 28px;
+  width: 64px;
+  height: 34px;
   flex-shrink: 0;
 }
 
@@ -120,11 +120,11 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 22px;
-  width: 22px;
+  height: 26px;
+  width: 26px;
   border-radius: 50%;
-  left: 3px;
-  bottom: 3px;
+  left: 4px;
+  bottom: 4px;
   z-index: 2;
   background-color: #e8e8e8;
   transition: .4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -133,11 +133,11 @@
 .sun svg {
   position: absolute;
   top: 50%;
-  right: 6px;
+  right: 8px;
   transform: translateY(-50%);
   z-index: 1;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   animation: rotate 15s linear infinite;
 }
 
@@ -145,11 +145,11 @@
   fill: #5a9ec2;
   position: absolute;
   top: 50%;
-  left: 6px;
+  left: 8px;
   transform: translateY(-50%);
   z-index: 1;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   animation: tilt 5s linear infinite;
 }
 
@@ -170,17 +170,17 @@
 }
 
 .input:checked + .slider:before {
-  transform: translateX(24px);
+  transform: translateX(30px);
 }
 
 .btn-primary {
   background: var(--text-primary);
   color: var(--bg-primary);
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  padding: 0.8rem 1.8rem;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
