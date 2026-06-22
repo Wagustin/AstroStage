@@ -22,8 +22,8 @@
 }
 
 .section-subtitle {
-  color: var(--text-secondary);
-  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.6rem;
 }
 
 /* Tabs — liquid-glass segmented control */
