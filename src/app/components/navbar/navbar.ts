@@ -44,15 +44,18 @@ export class Navbar implements OnInit {
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     if (this.isMenuOpen) {
-      document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden'; // Fixes scroll lock bugs on mobile browsers
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
   }
 
   closeMenu() {
     this.isMenuOpen = false;
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   }
 
   scrollToSection(sectionId: string, event: Event) {
@@ -80,6 +83,10 @@ export class Navbar implements OnInit {
 
         if (timeElapsed < duration) {
           requestAnimationFrame(animation);
+        } else {
+          // Safety unlock: ensure scroll is completely restored after animation finishes
+          document.body.style.overflow = '';
+          document.documentElement.style.overflow = '';
         }
       };
 
