@@ -25,7 +25,7 @@ export default async function handler(req: any, res: any) {
     const logoUrl = `${protocol}://${host}/assets/logo-email.jpeg`;
 
     const { data, error } = await resend.emails.send({
-      from: 'AstroStage <hola@mail.astrostage.us.kg>', 
+      from: 'AstroStage <sales-team@mail.astrostage.us.kg>', 
       to: email,
       subject: '¡Bienvenido al futuro! Ya estás en la lista de AstroStage 🚀',
       html: `
