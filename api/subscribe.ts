@@ -1,13 +1,16 @@
 import { Resend } from 'resend';
 
-// Vercel extracts this from Environment Variables in Production/Preview
-const resend = new Resend(process.env['RESEND_API_KEY']);
-
 export default async function handler(req: any, res: any) {
   // Solo permitimos el método POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido. Solo POST.' });
   }
+
+  const apiKey = process.env['RESEND_API_KEY'];
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Falta configurar RESEND_API_KEY en Vercel.' });
+  }
+  const resend = new Resend(apiKey);
 
   const { email } = req.body;
 
