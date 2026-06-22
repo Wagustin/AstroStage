@@ -25,7 +25,15 @@ export class AudioService {
     this.backgroundAudio = new Audio('assets/nebula.mp3');
     this.backgroundAudio.loop = true;
     this.backgroundAudio.volume = 0.09; // Reduced by another 50%
-    console.log('[AudioService] Audio initialized, waiting for interaction...');
+    console.log('[AudioService] Audio initialized, attempting immediate play...');
+    
+    // Attempt immediate playback (often blocked by browsers)
+    this.backgroundAudio.play().then(() => {
+      console.log('[AudioService] Immediate autoplay succeeded!');
+      this.hasStartedPlaying = true;
+    }).catch(err => {
+      console.warn('[AudioService] Immediate autoplay blocked by browser policy. Waiting for user interaction...', err);
+    });
   }
 
   private setupInteractionListener() {
