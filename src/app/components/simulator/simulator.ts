@@ -15,7 +15,8 @@ export class Simulator implements OnInit, AfterViewInit, OnDestroy {
   volume = 0.5;
   private muteSub!: Subscription;
 
-  @ViewChild('experienceVideo') videoRef!: ElementRef<HTMLVideoElement>;
+  @ViewChild('vrVideo') vrVideo!: ElementRef<HTMLVideoElement>;
+  @ViewChild('arVideo') arVideo!: ElementRef<HTMLVideoElement>;
 
   constructor(private audioService: AudioService) {}
 
@@ -23,9 +24,7 @@ export class Simulator implements OnInit, AfterViewInit, OnDestroy {
     this.muteSub = this.audioService.isGlobalMuted$.subscribe((shouldMute) => {
       if (shouldMute) {
         this.isMuted = true;
-        if (this.videoRef?.nativeElement) {
-          this.videoRef.nativeElement.muted = true;
-        }
+        this.applyMuteState();
       }
     });
   }
@@ -42,40 +41,60 @@ export class Simulator implements OnInit, AfterViewInit, OnDestroy {
 
   setTab(tab: 'vr' | 'ar') {
     this.activeTab = tab;
-    // Let Angular render the new view, then sync
-    setTimeout(() => this.syncVideo(), 0);
+    this.syncVideo();
   }
 
   toggleMute() {
     this.isMuted = !this.isMuted;
-    if (this.videoRef?.nativeElement) {
-      this.videoRef.nativeElement.muted = this.isMuted;
-    }
+    this.applyMuteState();
   }
 
   onVolumeChange(event: Event) {
     const val = +(event.target as HTMLInputElement).value;
     this.volume = val;
-    if (this.videoRef?.nativeElement) {
-      this.videoRef.nativeElement.volume = val;
-      // If user drags volume up from 0, unmute
-      if (val > 0 && this.isMuted) {
-        this.isMuted = false;
-        this.videoRef.nativeElement.muted = false;
-      }
-      if (val === 0) {
-        this.isMuted = true;
-        this.videoRef.nativeElement.muted = true;
-      }
+    
+    // If user drags volume up from 0, unmute
+    if (val > 0 && this.isMuted) {
+      this.isMuted = false;
+    }
+    if (val === 0) {
+      this.isMuted = true;
+    }
+    
+    this.applyVolumeState();
+  }
+
+  private applyMuteState() {
+    if (this.vrVideo?.nativeElement) {
+      this.vrVideo.nativeElement.muted = this.isMuted;
+    }
+    if (this.arVideo?.nativeElement) {
+      this.arVideo.nativeElement.muted = this.isMuted;
+    }
+  }
+
+  private applyVolumeState() {
+    this.applyMuteState();
+    if (this.vrVideo?.nativeElement) {
+      this.vrVideo.nativeElement.volume = this.volume;
+    }
+    if (this.arVideo?.nativeElement) {
+      this.arVideo.nativeElement.volume = this.volume;
     }
   }
 
   private syncVideo() {
-    if (this.videoRef?.nativeElement) {
-      const v = this.videoRef.nativeElement;
-      v.muted = this.isMuted;
-      v.volume = this.volume;
-      v.play().catch(() => {}); // autoplay may be blocked without muted
+    this.applyVolumeState();
+    
+    const vrNode = this.vrVideo?.nativeElement;
+    const arNode = this.arVideo?.nativeElement;
+    
+    if (this.activeTab === 'vr') {
+      if (arNode) arNode.pause();
+      if (vrNode) vrNode.play().catch(() => {});
+    } else {
+      if (vrNode) vrNode.pause();
+      if (arNode) arNode.play().catch(() => {});
     }
   }
 }

@@ -10,65 +10,63 @@
   </div>
 
   <div class="simulator-content reveal">
-    @if (activeTab === 'vr') {
-      <div class="experience-block">
-        <div class="simulator-display glass-panel">
-          <video #experienceVideo autoplay loop muted playsinline preload="auto" src="assets/vr-experience.mp4"></video>
-          <!-- Audio Controls -->
-          <div class="audio-controls">
-            <label class="toggleSwitch" (click)="toggleMute()">
-              <!-- Speaker icon (unmuted) -->
-              <span class="speaker" [style.opacity]="isMuted ? '0' : '1'">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
-                  <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <!-- Muted icon -->
-              <span class="mute-speaker" [style.opacity]="isMuted ? '1' : '0'">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
-                  <line x1="23" y1="9" x2="17" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                  <line x1="17" y1="9" x2="23" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </span>
-            </label>
-            <input type="range" class="volume-slider" min="0" max="1" step="0.01" [value]="volume" (input)="onVolumeChange($event)">
-          </div>
-        </div>
-        <div class="experience-text">
-          <h3>Inmersión Total 360°</h3>
-          <p>Transpórtate al estadio. Siente la energía de la multitud y disfruta del concierto desde la primera fila, sin importar dónde estés.</p>
+    <div class="experience-block" [hidden]="activeTab !== 'vr'">
+      <div class="simulator-display glass-panel">
+        <video #vrVideo autoplay loop muted playsinline preload="auto" src="assets/vr-experience.mp4"></video>
+        <!-- Audio Controls -->
+        <div class="audio-controls">
+          <label class="toggleSwitch" (click)="toggleMute()">
+            <!-- Speaker icon (unmuted) -->
+            <span class="speaker" [style.opacity]="isMuted ? '0' : '1'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
+                <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <!-- Muted icon -->
+            <span class="mute-speaker" [style.opacity]="isMuted ? '1' : '0'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
+                <line x1="23" y1="9" x2="17" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <line x1="17" y1="9" x2="23" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </label>
+          <input type="range" class="volume-slider" min="0" max="1" step="0.01" [value]="volume" (input)="onVolumeChange($event)">
         </div>
       </div>
-    } @else {
-      <div class="experience-block">
-        <div class="simulator-display glass-panel">
-          <video #experienceVideo autoplay loop muted playsinline preload="auto" src="assets/ar-experience.mp4"></video>
-          <div class="audio-controls">
-            <label class="toggleSwitch" (click)="toggleMute()">
-              <span class="speaker" [style.opacity]="isMuted ? '0' : '1'">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
-                  <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <span class="mute-speaker" [style.opacity]="isMuted ? '1' : '0'">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
-                  <line x1="23" y1="9" x2="17" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                  <line x1="17" y1="9" x2="23" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </span>
-            </label>
-            <input type="range" class="volume-slider" min="0" max="1" step="0.01" [value]="volume" (input)="onVolumeChange($event)">
-          </div>
-        </div>
-        <div class="experience-text">
-          <h3>Tu Sala es el Escenario</h3>
-          <p>El artista se proyecta holográficamente en tu propio espacio. Mezcla la música en vivo con tu entorno real gracias al Passthrough de alta resolución.</p>
+      <div class="experience-text">
+        <h3>Inmersión Total 360°</h3>
+        <p>Transpórtate al estadio. Siente la energía de la multitud y disfruta del concierto desde la primera fila, sin importar dónde estés.</p>
+      </div>
+    </div>
+    
+    <div class="experience-block" [hidden]="activeTab !== 'ar'">
+      <div class="simulator-display glass-panel">
+        <video #arVideo autoplay loop muted playsinline preload="auto" src="assets/ar-experience.mp4"></video>
+        <div class="audio-controls">
+          <label class="toggleSwitch" (click)="toggleMute()">
+            <span class="speaker" [style.opacity]="isMuted ? '0' : '1'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
+                <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="mute-speaker" [style.opacity]="isMuted ? '1' : '0'">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
+                <line x1="23" y1="9" x2="17" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <line x1="17" y1="9" x2="23" y2="15" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </label>
+          <input type="range" class="volume-slider" min="0" max="1" step="0.01" [value]="volume" (input)="onVolumeChange($event)">
         </div>
       </div>
-    }
+      <div class="experience-text">
+        <h3>Tu Sala es el Escenario</h3>
+        <p>El artista se proyecta holográficamente en tu propio espacio. Mezcla la música en vivo con tu entorno real gracias al Passthrough de alta resolución.</p>
+      </div>
+    </div>
   </div>
 </section>
