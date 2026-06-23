@@ -207,24 +207,39 @@
 }
 
 @media (max-width: 600px) {
-  .input-group {
+  .input-wrapper {
     flex-direction: column;
     background: transparent;
     border: none;
     padding: 0;
+    box-shadow: none;
+  }
+  
+  .input-wrapper:focus-within {
+    box-shadow: none;
+    transform: none;
+    background: transparent;
   }
   
   .email-input {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(24px) saturate(150%);
     border-radius: 30px;
     margin-bottom: 1rem;
+    padding: 1.2rem 1.5rem;
   }
   
-  .btn-primary {
+  .email-label {
+    left: 1.5rem;
+  }
+  
+  .submit-btn {
     width: 100%;
-    padding: 0.8rem;
+    justify-content: center;
+    padding: 1rem;
     font-size: 1rem;
+    margin-left: 0;
   }
 }
