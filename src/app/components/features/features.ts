@@ -20,13 +20,25 @@ export class Features implements AfterViewInit, OnDestroy {
   animationFrameId: number | null = null;
 
   ngAfterViewInit() {
-    if (this.videoDark) {
-      this.videoDark.nativeElement.load();
-      this.videoDark.nativeElement.pause();
-    }
-    if (this.videoLight) {
-      this.videoLight.nativeElement.load();
-      this.videoLight.nativeElement.pause();
+    // Graceful lazy loading to prevent blocking the hero video
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (this.videoDark?.nativeElement) {
+            this.videoDark.nativeElement.load();
+            this.videoDark.nativeElement.pause();
+          }
+          if (this.videoLight?.nativeElement) {
+            this.videoLight.nativeElement.load();
+            this.videoLight.nativeElement.pause();
+          }
+          obs.disconnect();
+        }
+      });
+    }, { rootMargin: '1000px', threshold: 0 });
+
+    if (this.sectionElement?.nativeElement) {
+      observer.observe(this.sectionElement.nativeElement);
     }
 
     // Start Lerp rendering loop

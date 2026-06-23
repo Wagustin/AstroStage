@@ -12,7 +12,7 @@
   <div class="simulator-content reveal">
     <div class="experience-block" [hidden]="activeTab !== 'vr'">
       <div class="simulator-display glass-panel">
-        <video #vrVideo autoplay loop muted playsinline preload="auto" src="assets/vr-experience.mp4"></video>
+        <video #vrVideo loop muted playsinline preload="metadata" src="assets/vr-experience.mp4"></video>
         <!-- Audio Controls -->
         <div class="audio-controls">
           <label class="toggleSwitch" (click)="toggleMute()">
@@ -43,7 +43,7 @@
     
     <div class="experience-block" [hidden]="activeTab !== 'ar'">
       <div class="simulator-display glass-panel">
-        <video #arVideo autoplay loop muted playsinline preload="auto" src="assets/ar-experience.mp4"></video>
+        <video #arVideo loop muted playsinline preload="metadata" src="assets/ar-experience.mp4"></video>
         <div class="audio-controls">
           <label class="toggleSwitch" (click)="toggleMute()">
             <span class="speaker" [style.opacity]="isMuted ? '0' : '1'">

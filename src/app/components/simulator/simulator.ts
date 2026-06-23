@@ -18,7 +18,10 @@ export class Simulator implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('vrVideo') vrVideo!: ElementRef<HTMLVideoElement>;
   @ViewChild('arVideo') arVideo!: ElementRef<HTMLVideoElement>;
 
-  constructor(private audioService: AudioService) {}
+  private observer: IntersectionObserver | null = null;
+  private isVisible = false;
+
+  constructor(private audioService: AudioService, private el: ElementRef) {}
 
   ngOnInit() {
     this.muteSub = this.audioService.isGlobalMuted$.subscribe((shouldMute) => {
@@ -30,13 +33,33 @@ export class Simulator implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.syncVideo();
+    this.setupIntersectionObserver();
   }
 
   ngOnDestroy() {
     if (this.muteSub) {
       this.muteSub.unsubscribe();
     }
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  private setupIntersectionObserver() {
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        this.isVisible = entry.isIntersecting;
+        if (this.isVisible) {
+          this.syncVideo();
+        } else {
+          // Pause videos when scrolled away to save CPU
+          if (this.vrVideo?.nativeElement) this.vrVideo.nativeElement.pause();
+          if (this.arVideo?.nativeElement) this.arVideo.nativeElement.pause();
+        }
+      });
+    }, { rootMargin: '400px', threshold: 0 });
+
+    this.observer.observe(this.el.nativeElement);
   }
 
   setTab(tab: 'vr' | 'ar') {
@@ -91,10 +114,10 @@ export class Simulator implements OnInit, AfterViewInit, OnDestroy {
     
     if (this.activeTab === 'vr') {
       if (arNode) arNode.pause();
-      if (vrNode) vrNode.play().catch(() => {});
+      if (vrNode && this.isVisible) vrNode.play().catch(() => {});
     } else {
       if (vrNode) vrNode.pause();
-      if (arNode) arNode.play().catch(() => {});
+      if (arNode && this.isVisible) arNode.play().catch(() => {});
     }
   }
 }
