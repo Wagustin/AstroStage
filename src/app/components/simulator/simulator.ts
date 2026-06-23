@@ -31,19 +31,46 @@ export class Simulator implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.syncVideo();
+    this.setupIntersectionObserver();
   }
 
   ngOnDestroy() {
     if (this.muteSub) {
       this.muteSub.unsubscribe();
     }
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  private observer: IntersectionObserver | null = null;
+
+  private setupIntersectionObserver() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+    
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.syncVideo();
+        } else {
+          if (this.videoRef?.nativeElement) {
+            this.videoRef.nativeElement.pause();
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+
+    if (this.videoRef?.nativeElement) {
+      this.observer.observe(this.videoRef.nativeElement);
+    }
   }
 
   setTab(tab: 'vr' | 'ar') {
     this.activeTab = tab;
-    // Let Angular render the new view, then sync
-    setTimeout(() => this.syncVideo(), 0);
+    // Let Angular render the new view, then setup the observer for the new video element
+    setTimeout(() => this.setupIntersectionObserver(), 0);
   }
 
   toggleMute() {

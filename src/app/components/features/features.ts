@@ -77,12 +77,18 @@ export class Features implements AfterViewInit, OnDestroy {
 
     if (vidDark && !isNaN(vidDark.duration) && vidDark.duration > 0) {
       if (!vidDark.paused) vidDark.pause();
-      vidDark.currentTime = Math.min(this.currentProgress, 0.99) * vidDark.duration;
+      const newTime = Math.min(this.currentProgress, 0.99) * vidDark.duration;
+      if (Math.abs(vidDark.currentTime - newTime) > 0.03) {
+        vidDark.currentTime = newTime;
+      }
     }
 
     if (vidLight && !isNaN(vidLight.duration) && vidLight.duration > 0) {
       if (!vidLight.paused) vidLight.pause();
-      vidLight.currentTime = Math.min(this.currentProgress, 0.99) * vidLight.duration;
+      const newTime = Math.min(this.currentProgress, 0.99) * vidLight.duration;
+      if (Math.abs(vidLight.currentTime - newTime) > 0.03) {
+        vidLight.currentTime = newTime;
+      }
     }
 
     // Update the UI state based on current (interpolated) progress
