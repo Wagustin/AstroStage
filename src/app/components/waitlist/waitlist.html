@@ -5,17 +5,19 @@
       <p class="section-subtitle">Asegura tu acceso anticipado a la plataforma y experimenta el futuro de los conciertos antes del lanzamiento global.</p>
       
       <form [formGroup]="waitlistForm" (ngSubmit)="onSubmit()" class="waitlist-form">
-        <div class="input-group">
+        <div class="input-wrapper" [class.invalid-wrapper]="submitted && waitlistForm.get('email')?.invalid">
           <input 
             type="email" 
             formControlName="email" 
-            placeholder="Tu correo electrónico" 
+            placeholder=" " 
             class="email-input"
-            [class.invalid]="submitted && waitlistForm.get('email')?.invalid"
+            id="emailInput"
             [disabled]="loading"
           >
-          <button type="submit" class="btn-primary" [disabled]="loading">
-            {{ loading ? 'Enviando...' : 'Solicitar Acceso' }}
+          <label for="emailInput" class="email-label">Tu correo electrónico</label>
+          <button type="submit" class="submit-btn" [disabled]="loading">
+            <span class="btn-text">{{ loading ? 'Enviando...' : 'Solicitar Acceso' }}</span>
+            <span class="btn-icon">→</span>
           </button>
         </div>
         

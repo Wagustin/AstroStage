@@ -1,26 +1,52 @@
-<section class="features-section" id="tecnologia">
-  <div class="features-header">
-    <h2 class="section-title">El Futuro del Entretenimiento</h2>
-    <p class="section-subtitle">Tecnología de vanguardia diseñada para conectarte con tus artistas favoritos.</p>
-  </div>
+<section class="features-section" id="tecnologia" #featuresSection>
+  <div class="video-scroll-container">
+    <video class="reactive-video video-dark" #scrollVideoDark muted playsinline preload="auto">
+      <source src="assets/videos/starfield-showcase-dark.mp4" type="video/mp4">
+    </video>
+    <video class="reactive-video video-light" #scrollVideoLight muted playsinline preload="auto">
+      <source src="assets/videos/starfield-showcase-light.mp4" type="video/mp4">
+    </video>
+    
+    <div class="video-overlay-text">
+      
+      <!-- Feature 1 -->
+      <div class="video-feature-block" [class.active]="activeFeature === 1">
+        <div class="icon-container">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+        </div>
+        <h2 class="elegant-title">Streaming Holográfico 3D</h2>
+        <p class="elegant-text">Captura volumétrica en tiempo real. Presencia tridimensional a escala real impulsada por tecnología multicámara de ultra alta definición.</p>
+      </div>
 
-  <div class="features-grid">
-    <div class="feature-card glass-panel reveal">
-      <div class="feature-icon">✨</div>
-      <h3>Streaming Holográfico 3D</h3>
-      <p>Captura volumétrica en tiempo real. No es un video plano, es una presencia tridimensional a escala real.</p>
-    </div>
+      <!-- Feature 2 -->
+      <div class="video-feature-block" [class.active]="activeFeature === 2">
+        <div class="icon-container">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12c0-3.86 3.14-7 7-7h6c3.86 0 7 3.14 7 7v2c0 2.21-1.79 4-4 4h-1.5c-1.1 0-2.14-.57-2.73-1.48l-1.54-2.31c-.13-.2-.35-.32-.59-.32h-3.28c-.24 0-.46.12-.59.32l-1.54 2.31c-.59.91-1.63 1.48-2.73 1.48H6c-2.21 0-4-1.79-4-4v-2z"></path>
+            <path d="M7 12h2"></path>
+            <path d="M15 12h2"></path>
+          </svg>
+        </div>
+        <h2 class="elegant-title">Renting de Visores</h2>
+        <p class="elegant-text">La barrera de entrada ha desaparecido. Te enviamos los últimos modelos preconfigurados (Apple Vision Pro, Meta Quest 3) directamente a casa.</p>
+      </div>
 
-    <div class="feature-card glass-panel reveal" id="alquiler">
-      <div class="feature-icon">🥽</div>
-      <h3>Renting de Visores</h3>
-      <p>¿No tienes un visor VR/AR? Nosotros te enviamos el equipo a casa antes del concierto y lo recogemos después.</p>
-    </div>
+      <!-- Feature 3 -->
+      <div class="video-feature-block" [class.active]="activeFeature === 3">
+        <div class="icon-container">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </div>
+        <h2 class="elegant-title">E-Commerce Integrado</h2>
+        <p class="elegant-text">Acceso sin fricción. Compra de entradas y merchandising físico exclusivo desde el escenario virtual con checkout en un clic vía Apple Pay.</p>
+      </div>
 
-    <div class="feature-card glass-panel reveal">
-      <div class="feature-icon">🎫</div>
-      <h3>E-Commerce Integrado</h3>
-      <p>Compra entradas, merchandising digital exclusivo y pases de meet & greet virtual desde una sola plataforma.</p>
     </div>
   </div>
 </section>

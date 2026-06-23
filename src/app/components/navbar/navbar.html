@@ -1,7 +1,7 @@
 <nav class="navbar" [class.menu-open]="isMenuOpen">
   <div class="navbar-header">
     <div class="logo-container">
-      <a routerLink="/" class="reactive-logo" (click)="closeMenu()">AstroStage</a>
+      <a href="#" class="reactive-logo" (click)="scrollToTop($event)">AstroStage</a>
     </div>
 
     <!-- Hamburger menu icon -->
@@ -34,12 +34,12 @@
           </span>
           <span class="moon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              <path d="M20 15A8.5 8.5 0 1 1 9 4a8.5 8.5 0 0 0 11 11z"/>
             </svg>
           </span>
         </span>
       </label>
-      <button class="btn-primary" (click)="scrollToSection('beta', $event)">Unirse a la Beta</button>
+      <button class="btn-secondary" (click)="scrollToSection('beta', $event)">Unirse a la Beta</button>
     </div>
   </div>
 </nav>

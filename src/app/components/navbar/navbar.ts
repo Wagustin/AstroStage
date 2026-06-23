@@ -58,6 +58,15 @@ export class Navbar implements OnInit {
     document.documentElement.style.overflow = '';
   }
 
+  scrollToTop(event: Event) {
+    event.preventDefault();
+    this.closeMenu();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
   scrollToSection(sectionId: string, event: Event) {
     event.preventDefault();
     this.closeMenu();

@@ -15,9 +15,9 @@
   --bg-glass: rgba(4, 18, 32, 0.7);
   --border-glass: rgba(42, 106, 133, 0.3); /* Azul medio */
   
-  /* Accents */
-  --accent-cyan: #4ce4de; /* Cian neón */
-  --accent-purple: #00ffff; /* Cian puro (reemplaza el morado) */
+  /* Accents - Refined, subtle cyan/teal */
+  --accent-cyan: #6edfd9; /* Cian suave */
+  --accent-purple: #3aa6a6; /* Cian oscuro/teal para gradiente sutil */
   
   /* Text */
   --text-primary: #ffffff;
@@ -35,10 +35,10 @@
   --bg-glass: rgba(255, 255, 255, 0.7); /* Brighter glass panels */
   --border-glass: rgba(0, 0, 0, 0.15); /* Stronger borders for panels */
   
-  --accent-cyan: #075a6b; /* Much darker teal for high contrast */
-  --accent-purple: #352a75; /* Much darker purple */
+  --accent-cyan: #10758a; /* Darker teal for high contrast */
+  --accent-purple: #0d5563; /* Even darker teal for subtle gradient */
   
-  --text-primary: #050a14; /* Pure dark blue/black */
+  --text-primary: #000000; /* Pure black */
   --text-secondary: #2d3748; /* Strong dark grey */
 }
 
@@ -56,7 +56,7 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-body);
-  line-height: 1.6;
+  line-height: 1.7; /* Increased for premium editorial feel */
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   overflow-x: hidden;
@@ -76,19 +76,7 @@ app-footer {
 }
 
 
-/* Elegant futuristic noise texture - detached from body background to fix transition lag */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  pointer-events: none;
-  z-index: 9999; /* Overlay texture */
-}
+/* Noise texture removed for performance and cleaner aesthetic */
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-title);
@@ -112,19 +100,19 @@ button {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-glass);
   border-radius: 16px;
-  transition: background 0.5s ease, border-color 0.5s ease;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+  /* Subtle gradient using the same hue but different lightness */
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 70%, var(--accent-purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* Smooth theme transitions targeted specifically to avoid layout lag */
-body, .glass-panel, button, a {
-  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+body {
+  transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 /* Scroll Reveal Animations */
@@ -136,4 +124,15 @@ body, .glass-panel, button, a {
 
 .reveal.is-revealed {
   opacity: 1;
+}
+
+/* Premium Focus Rings for Accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 4px;
+  transition: outline-offset 0.2s ease;
+}
+
+button:focus-visible, a:focus-visible {
+  border-radius: 4px;
 }
