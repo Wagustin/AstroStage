@@ -13,7 +13,7 @@
     @if (activeTab === 'vr') {
       <div class="experience-block">
         <div class="simulator-display glass-panel">
-          <video #experienceVideo loop muted playsinline preload="none" [src]="'assets/vr-experience.mp4'"></video>
+          <video #experienceVideo autoplay loop muted playsinline preload="auto" [src]="'assets/vr-experience.mp4'"></video>
           <!-- Audio Controls -->
           <div class="audio-controls">
             <label class="toggleSwitch" (click)="toggleMute()">
@@ -44,7 +44,7 @@
     } @else {
       <div class="experience-block">
         <div class="simulator-display glass-panel">
-          <video #experienceVideo loop muted playsinline preload="none" [src]="'assets/ar-experience.mp4'"></video>
+          <video #experienceVideo autoplay loop muted playsinline preload="auto" [src]="'assets/ar-experience.mp4'"></video>
           <div class="audio-controls">
             <label class="toggleSwitch" (click)="toggleMute()">
               <span class="speaker" [style.opacity]="isMuted ? '0' : '1'">

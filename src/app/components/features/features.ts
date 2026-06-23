@@ -20,34 +20,13 @@ export class Features implements AfterViewInit, OnDestroy {
   animationFrameId: number | null = null;
 
   ngAfterViewInit() {
-    // Lazy load the video buffers only when the user is approaching the section
-    // to prevent blocking the initial page load
-    const options = {
-      root: null,
-      rootMargin: '800px', // Load before it comes into view
-      threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (this.videoDark) {
-            this.videoDark.nativeElement.preload = 'auto';
-            this.videoDark.nativeElement.load();
-            this.videoDark.nativeElement.pause();
-          }
-          if (this.videoLight) {
-            this.videoLight.nativeElement.preload = 'auto';
-            this.videoLight.nativeElement.load();
-            this.videoLight.nativeElement.pause();
-          }
-          obs.disconnect(); // Stop observing once loaded
-        }
-      });
-    }, options);
-
-    if (this.sectionElement) {
-      observer.observe(this.sectionElement.nativeElement);
+    if (this.videoDark) {
+      this.videoDark.nativeElement.load();
+      this.videoDark.nativeElement.pause();
+    }
+    if (this.videoLight) {
+      this.videoLight.nativeElement.load();
+      this.videoLight.nativeElement.pause();
     }
 
     // Start Lerp rendering loop
@@ -77,16 +56,15 @@ export class Features implements AfterViewInit, OnDestroy {
 
     if (vidDark && !isNaN(vidDark.duration) && vidDark.duration > 0) {
       if (!vidDark.paused) vidDark.pause();
-      const newTime = Math.min(this.currentProgress, 0.99) * vidDark.duration;
-      if (Math.abs(vidDark.currentTime - newTime) > 0.03) {
-        vidDark.currentTime = newTime;
-      }
-    }
-
-    if (vidLight && !isNaN(vidLight.duration) && vidLight.duration > 0) {
-      if (!vidLight.paused) vidLight.pause();
-      const newTime = Math.min(this.currentProgress, 0.99) * vidLight.duration;
-      if (Math.abs(vidLight.currentTime - newTime) > 0.03) {
+      const targetTime = Math.min(this.currentProgress, 0.99) * vidDark.duration;
+      
+      // Smooth interpolation (Lerp)
+      const newTime = vidDark.currentTime + (targetTime - vidDark.currentTime) * 0.1;
+      
+      // With G1 encoded videos, we can safely update currentTime every frame without lag
+      vidDark.currentTime = newTime;
+      
+      if (vidLight) {
         vidLight.currentTime = newTime;
       }
     }
