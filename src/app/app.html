@@ -1,13 +1,18 @@
 <canvas id="cursor-canvas" class="cursor-canvas"></canvas>
-<app-navbar></app-navbar>
 
-<main>
-  <app-hero id="inicio"></app-hero>
-  <app-simulator id="experiencia"></app-simulator>
-  <app-features id="tecnologia"></app-features>
-  <app-alquiler id="alquiler"></app-alquiler>
-  <app-waitlist></app-waitlist>
-  <app-nosotros></app-nosotros>
-</main>
+@if (router.url === '/legal') {
+  <app-legal></app-legal>
+} @else {
+  <app-navbar></app-navbar>
 
-<app-footer></app-footer>
+  <main>
+    <app-hero id="inicio"></app-hero>
+    <app-simulator id="experiencia"></app-simulator>
+    <app-features id="tecnologia"></app-features>
+    <app-alquiler id="alquiler"></app-alquiler>
+    <app-waitlist></app-waitlist>
+    <app-nosotros></app-nosotros>
+  </main>
+
+  <app-footer></app-footer>
+}

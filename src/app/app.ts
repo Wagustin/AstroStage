@@ -7,18 +7,19 @@ import { Alquiler } from './components/alquiler/alquiler';
 import { Waitlist } from './components/waitlist/waitlist';
 import { Nosotros } from './components/nosotros/nosotros';
 import { Footer } from './components/footer/footer';
-
+import { Legal } from './pages/legal/legal';
 import { AudioService } from './services/audio.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Navbar, Hero, Simulator, Features, Alquiler, Waitlist, Nosotros, Footer],
+  imports: [Navbar, Hero, Simulator, Features, Alquiler, Waitlist, Nosotros, Footer, Legal],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App implements AfterViewInit {
-  constructor(private audioService: AudioService) {}
+  constructor(private audioService: AudioService, public router: Router) {}
 
   ngAfterViewInit() {
     // Scroll Reveal Observer
