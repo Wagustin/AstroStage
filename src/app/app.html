@@ -1,6 +1,6 @@
 <canvas id="cursor-canvas" class="cursor-canvas"></canvas>
 
-@if (router.url === '/legal') {
+@if (router.url.startsWith('/legal')) {
   <app-legal></app-legal>
 } @else {
   <app-navbar></app-navbar>
