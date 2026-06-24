@@ -28,11 +28,16 @@
 
 <div class="legal-layout">
   <aside class="legal-sidebar">
-    <div class="sidebar-header">
-      <h1>Políticas y Legal</h1>
-      <p class="last-updated">Última actualización: Junio 2026</p>
+    <div class="sidebar-header" (click)="toggleSidebar()">
+      <div class="header-titles">
+        <h1>Políticas y Legal</h1>
+        <p class="last-updated">Última actualización: Junio 2026</p>
+      </div>
+      <svg class="chevron-icon" [class.rotated]="isSidebarOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
     </div>
-    <ul class="sidebar-nav">
+    <ul class="sidebar-nav" [class.open]="isSidebarOpen">
       <li><button [class.active]="activeTab === 'terminos'" (click)="setTab('terminos')">Términos Comerciales</button></li>
       <li><button [class.active]="activeTab === 'privacidad'" (click)="setTab('privacidad')">Política de Privacidad</button></li>
       <li><button [class.active]="activeTab === 'cookies'" (click)="setTab('cookies')">Gestión de Cookies</button></li>
