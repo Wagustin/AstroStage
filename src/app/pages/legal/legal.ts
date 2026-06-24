@@ -9,6 +9,21 @@ import { RouterLink } from '@angular/router';
   styleUrl: './legal.css'
 })
 export class Legal {
+  activeTab: string = 'terminos';
+
+  constructor() {
+    const hash = window.location.hash.replace('#', '');
+    if (['terminos', 'privacidad', 'cookies', 'reclamaciones'].includes(hash)) {
+      this.activeTab = hash;
+    }
+  }
+
+  setTab(tab: string) {
+    this.activeTab = tab;
+    window.history.replaceState(null, '', `/legal#${tab}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   toggleTheme() {
     document.body.classList.toggle('light-theme');
   }

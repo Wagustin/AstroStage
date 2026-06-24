@@ -26,44 +26,62 @@
   </div>
 </nav>
 
-<div class="legal-container">
-  <div class="legal-content">
-    <h1>Políticas y Legal</h1>
-    <p class="last-updated">Última actualización: Junio 2026</p>
+<div class="legal-layout">
+  <aside class="legal-sidebar">
+    <div class="sidebar-header">
+      <h1>Políticas y Legal</h1>
+      <p class="last-updated">Última actualización: Junio 2026</p>
+    </div>
+    <ul class="sidebar-nav">
+      <li><button [class.active]="activeTab === 'terminos'" (click)="setTab('terminos')">Términos Comerciales</button></li>
+      <li><button [class.active]="activeTab === 'privacidad'" (click)="setTab('privacidad')">Política de Privacidad</button></li>
+      <li><button [class.active]="activeTab === 'cookies'" (click)="setTab('cookies')">Gestión de Cookies</button></li>
+      <li><button [class.active]="activeTab === 'reclamaciones'" (click)="setTab('reclamaciones')">Libro de Reclamaciones</button></li>
+    </ul>
+  </aside>
 
-    <section id="terminos">
-      <h2>1. Términos Comerciales (E-Commerce y Renting)</h2>
-      <p>Bienvenido a ASTROSTAGE E.I.R.L. Estos términos rigen el uso de nuestros servicios de alquiler y plataformas de e-commerce. De acuerdo con nuestro objeto social, nuestras actividades comerciales incluyen:</p>
-      <ul>
-        <li><strong>Plataformas y Streaming:</strong> El desarrollo, programación, explotación, soporte, mantenimiento y comercialización de plataformas digitales, aplicaciones móviles y entornos de software dedicados a la transmisión por streaming de alta fidelidad (en tiempo real o diferido) de espectáculos públicos y eventos.</li>
-        <li><strong>Realidad Extendida (AR/VR):</strong> La producción, captura, procesamiento, renderizado y transmisión de imágenes holográficas, modelados 3D y entornos de realidad aumentada (AR) y virtual (VR).</li>
-        <li><strong>E-Commerce y Renting de Hardware:</strong> La comercialización, importación, exportación, distribución y entrega de dispositivos de hardware tecnológico (gafas AR, visores VR, sensores) bajo modalidades de venta directa o contratos de arrendamiento operativo (renting) y financiero.</li>
-        <li><strong>Suscripciones y Ticketing:</strong> La gestión de suscripciones digitales, venta de entradas virtuales y pasarelas de pago a través de nuestras plataformas.</li>
-      </ul>
-      <p>Nuestras actividades comerciales se desarrollan bajo el estricto cumplimiento del principio de buena fe empresarial, transparencia, lealtad comercial y respeto a la propiedad intelectual de terceros.</p>
-    </section>
+  <main class="legal-content">
+    @if (activeTab === 'terminos') {
+      <section class="tab-pane">
+        <h2>Términos Comerciales (E-Commerce y Renting)</h2>
+        <p>Bienvenido a ASTROSTAGE E.I.R.L. Estos términos rigen el uso de nuestros servicios de alquiler y plataformas de e-commerce. De acuerdo con nuestro objeto social, nuestras actividades comerciales incluyen:</p>
+        <ul>
+          <li><strong>Plataformas y Streaming:</strong> El desarrollo, programación, explotación, soporte, mantenimiento y comercialización de plataformas digitales, aplicaciones móviles y entornos de software dedicados a la transmisión por streaming de alta fidelidad (en tiempo real o diferido) de espectáculos públicos y eventos.</li>
+          <li><strong>Realidad Extendida (AR/VR):</strong> La producción, captura, procesamiento, renderizado y transmisión de imágenes holográficas, modelados 3D y entornos de realidad aumentada (AR) y virtual (VR).</li>
+          <li><strong>E-Commerce y Renting de Hardware:</strong> La comercialización, importación, exportación, distribución y entrega de dispositivos de hardware tecnológico (gafas AR, visores VR, sensores) bajo modalidades de venta directa o contratos de arrendamiento operativo (renting) y financiero.</li>
+          <li><strong>Suscripciones y Ticketing:</strong> La gestión de suscripciones digitales, venta de entradas virtuales y pasarelas de pago a través de nuestras plataformas.</li>
+        </ul>
+        <p>Nuestras actividades comerciales se desarrollan bajo el estricto cumplimiento del principio de buena fe empresarial, transparencia, lealtad comercial y respeto a la propiedad intelectual de terceros.</p>
+      </section>
+    }
 
-    <section id="privacidad">
-      <h2>2. Política de Privacidad (Ley N° 29733)</h2>
-      <p>En cumplimiento estricto con la Ley de Protección de Datos Personales (Ley N° 29733) del Perú, garantizamos la confidencialidad de tus datos. El tratamiento automatizado de los flujos de información, la gestión de perfiles de navegación y la implementación de sistemas de seguridad de la información operan bajo normativas internacionales.</p>
-      <p>La interfaz de nuestra plataforma implementa un sistema nativo de consentimientos explícitos. Este sistema opera mediante mecanismos de casillas de verificación interactivas (checkboxes) desmarcadas por defecto, las cuales requieren una acción afirmativa e informada del usuario antes del registro, garantizando que el almacenamiento y tratamiento cuenten con el respaldo de las normativas de compliance digital y lealtad comercial.</p>
-    </section>
+    @if (activeTab === 'privacidad') {
+      <section class="tab-pane">
+        <h2>Política de Privacidad (Ley N° 29733)</h2>
+        <p>En cumplimiento estricto con la Ley de Protección de Datos Personales (Ley N° 29733) del Perú, garantizamos la confidencialidad de tus datos. El tratamiento automatizado de los flujos de información, la gestión de perfiles de navegación y la implementación de sistemas de seguridad de la información operan bajo normativas internacionales.</p>
+        <p>La interfaz de nuestra plataforma implementa un sistema nativo de consentimientos explícitos. Este sistema opera mediante mecanismos de casillas de verificación interactivas (checkboxes) desmarcadas por defecto, las cuales requieren una acción afirmativa e informada del usuario antes del registro, garantizando que el almacenamiento y tratamiento cuenten con el respaldo de las normativas de compliance digital y lealtad comercial.</p>
+      </section>
+    }
 
-    <section id="cookies">
-      <h2>3. Gestión de Cookies</h2>
-      <p>Nuestra plataforma incorpora un módulo global e inteligente para la administración de cookies y tecnologías de seguimiento. Este componente restringe la ejecución de cualquier script analítico o publicitario hasta que la audiencia acepte las políticas correspondientes.</p>
-      <p>Las cookies se clasifican estrictamente según su finalidad técnica en nuestro ecosistema virtual:</p>
-      <ul>
-        <li><strong>Cookies esenciales o técnicas:</strong> De duración limitada a la sesión del usuario. Garantizan la estabilidad de las transacciones financieras y la reproducción de video de alta fidelidad en tiempo real.</li>
-        <li><strong>Cookies de personalización:</strong> De carácter persistente. Recuerdan las preferencias individuales de audio de alta fidelidad y la calibración técnica de los visores de realidad virtual y aumentada.</li>
-        <li><strong>Cookies analíticas:</strong> Con una vigencia técnica de un año. Destinadas al análisis de la conversión de entradas virtuales y al monitoreo del rendimiento de los servidores de transmisión.</li>
-      </ul>
-    </section>
+    @if (activeTab === 'cookies') {
+      <section class="tab-pane">
+        <h2>Gestión de Cookies</h2>
+        <p>Nuestra plataforma incorpora un módulo global e inteligente para la administración de cookies y tecnologías de seguimiento. Este componente restringe la ejecución de cualquier script analítico o publicitario hasta que la audiencia acepte las políticas correspondientes.</p>
+        <p>Las cookies se clasifican estrictamente según su finalidad técnica en nuestro ecosistema virtual:</p>
+        <ul>
+          <li><strong>Cookies esenciales o técnicas:</strong> De duración limitada a la sesión del usuario. Garantizan la estabilidad de las transacciones financieras y la reproducción de video de alta fidelidad en tiempo real.</li>
+          <li><strong>Cookies de personalización:</strong> De carácter persistente. Recuerdan las preferencias individuales de audio de alta fidelidad y la calibración técnica de los visores de realidad virtual y aumentada.</li>
+          <li><strong>Cookies analíticas:</strong> Con una vigencia técnica de un año. Destinadas al análisis de la conversión de entradas virtuales y al monitoreo del rendimiento de los servidores de transmisión.</li>
+        </ul>
+      </section>
+    }
 
-    <section id="reclamaciones">
-      <h2>4. Libro de Reclamaciones</h2>
-      <p>Conforme a lo establecido en el Código de Protección y Defensa del Consumidor (Ley N° 29571) de INDECOPI, ASTROSTAGE E.I.R.L. pone a tu disposición un Libro de Reclamaciones Virtual.</p>
-      <p>Para registrar una queja o reclamo, por favor envía un correo detallado a <strong>reclamos@mail.astrostage.us.kg</strong> con el asunto "RECLAMO - [Tu Nombre]". Procesaremos tu solicitud y emitiremos una respuesta dentro del plazo legal establecido por la normativa de protección al consumidor.</p>
-    </section>
-  </div>
+    @if (activeTab === 'reclamaciones') {
+      <section class="tab-pane">
+        <h2>Libro de Reclamaciones</h2>
+        <p>Conforme a lo establecido en el Código de Protección y Defensa del Consumidor (Ley N° 29571) de INDECOPI, ASTROSTAGE E.I.R.L. pone a tu disposición un Libro de Reclamaciones Virtual.</p>
+        <p>Para registrar una queja o reclamo, por favor envía un correo detallado a <strong>reclamos@mail.astrostage.us.kg</strong> con el asunto "RECLAMO - [Tu Nombre]". Procesaremos tu solicitud y emitiremos una respuesta dentro del plazo legal establecido por la normativa de protección al consumidor.</p>
+      </section>
+    }
+  </main>
 </div>
