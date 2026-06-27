@@ -52,17 +52,16 @@ export class Features implements AfterViewInit, OnDestroy {
 
     const vidDark = this.videoDark?.nativeElement;
     const vidLight = this.videoLight?.nativeElement;
+    const isLight = document.body.classList.contains('light-theme');
+    const activeVid = isLight ? vidLight : vidDark;
 
-    if (vidDark && !isNaN(vidDark.duration) && vidDark.duration > 0) {
-      if (!vidDark.paused) vidDark.pause();
-      const targetTime = Math.min(this.currentProgress, 0.99) * vidDark.duration;
+    if (activeVid && !isNaN(activeVid.duration) && activeVid.duration > 0) {
+      if (!activeVid.paused) activeVid.pause();
+      const targetTime = Math.min(this.currentProgress, 0.99) * activeVid.duration;
       
       // Update only if difference is significant to save rendering thread in Chrome
-      if (Math.abs(vidDark.currentTime - targetTime) > 0.015) {
-        vidDark.currentTime = targetTime;
-        if (vidLight) {
-          vidLight.currentTime = targetTime;
-        }
+      if (Math.abs(activeVid.currentTime - targetTime) > 0.015) {
+        activeVid.currentTime = targetTime;
       }
     }
 
