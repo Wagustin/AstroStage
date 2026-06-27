@@ -41,7 +41,6 @@ export class Features implements AfterViewInit, OnDestroy {
 
   renderLoop = () => {
     // --- MOMENTUM SCRUBBING (Rueda con impulso) ---
-    // --- MOMENTUM SCRUBBING (Rueda con impulso) ---
     // Smooth, gradual deceleration with no sudden stops
     const lerpFactor = 0.05;
     this.currentProgress += (this.targetProgress - this.currentProgress) * lerpFactor;
@@ -58,14 +57,12 @@ export class Features implements AfterViewInit, OnDestroy {
       if (!vidDark.paused) vidDark.pause();
       const targetTime = Math.min(this.currentProgress, 0.99) * vidDark.duration;
       
-      // Smooth interpolation (Lerp)
-      const newTime = vidDark.currentTime + (targetTime - vidDark.currentTime) * 0.1;
-      
-      // With G1 encoded videos, we can safely update currentTime every frame without lag
-      vidDark.currentTime = newTime;
-      
-      if (vidLight) {
-        vidLight.currentTime = newTime;
+      // Update only if difference is significant to save rendering thread in Chrome
+      if (Math.abs(vidDark.currentTime - targetTime) > 0.015) {
+        vidDark.currentTime = targetTime;
+        if (vidLight) {
+          vidLight.currentTime = targetTime;
+        }
       }
     }
 
