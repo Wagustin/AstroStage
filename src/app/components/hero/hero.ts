@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, NgZone, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-hero',
@@ -6,25 +6,33 @@ import { Component, HostListener, ElementRef, ViewChild, AfterViewInit } from '@
   templateUrl: './hero.html',
   styleUrl: './hero.css',
 })
-export class Hero implements AfterViewInit {
+export class Hero implements AfterViewInit, OnDestroy {
   @ViewChild('heroVideo') heroVideo!: ElementRef<HTMLVideoElement>;
+  private mouseMoveListener!: (event: MouseEvent) => void;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef, private ngZone: NgZone) {}
 
   ngAfterViewInit() {
     if (this.heroVideo) {
-      // Force play for aggressive browsers like Chrome
       this.heroVideo.nativeElement.muted = true;
       this.heroVideo.nativeElement.play().catch(e => console.log('Autoplay deferred by browser', e));
     }
+
+    this.ngZone.runOutsideAngular(() => {
+      this.mouseMoveListener = (event: MouseEvent) => {
+        const x = event.clientX;
+        const y = event.clientY;
+        this.el.nativeElement.style.setProperty('--mouse-x', `${x}px`);
+        this.el.nativeElement.style.setProperty('--mouse-y', `${y}px`);
+      };
+      window.addEventListener('mousemove', this.mouseMoveListener, { passive: true });
+    });
   }
 
-  @HostListener('mousemove', ['$event'])
-  onMouseMove(event: MouseEvent) {
-    const x = event.clientX;
-    const y = event.clientY;
-    this.el.nativeElement.style.setProperty('--mouse-x', `${x}px`);
-    this.el.nativeElement.style.setProperty('--mouse-y', `${y}px`);
+  ngOnDestroy() {
+    if (this.mouseMoveListener) {
+      window.removeEventListener('mousemove', this.mouseMoveListener);
+    }
   }
 
   scrollToSection(sectionId: string) {

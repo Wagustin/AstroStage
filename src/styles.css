@@ -98,6 +98,7 @@ button {
   background: var(--bg-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  will-change: transform, backdrop-filter;
   border: 1px solid var(--border-glass);
   border-radius: 16px;
 }

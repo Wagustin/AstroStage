@@ -8,6 +8,7 @@
   background: var(--bg-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  will-change: transform, backdrop-filter;
   border-bottom: 1px solid var(--border-glass);
   /* Removed heavy background transition */
   --mouse-x: 50%;

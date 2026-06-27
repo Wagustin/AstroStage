@@ -17,6 +17,7 @@
   background: rgba(var(--bg-color-rgb), 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  will-change: transform, backdrop-filter;
   z-index: 100;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }

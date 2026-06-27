@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -18,6 +18,9 @@ export class Features implements AfterViewInit, OnDestroy {
   targetProgress = 0;
   currentProgress = 0;
   animationFrameId: number | null = null;
+  private scrollListener!: () => void;
+
+  constructor(private ngZone: NgZone) {}
 
   ngAfterViewInit() {
     if (this.videoDark) {
@@ -29,13 +32,32 @@ export class Features implements AfterViewInit, OnDestroy {
       this.videoLight.nativeElement.pause();
     }
 
-    // Start Lerp rendering loop
-    this.renderLoop();
+    this.ngZone.runOutsideAngular(() => {
+      this.scrollListener = () => {
+        if (!this.sectionElement) return;
+
+        const section = this.sectionElement.nativeElement;
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        const scrollableDistance = section.offsetHeight - windowHeight;
+        const scrolled = -rect.top;
+
+        let rawProgress = scrolled / scrollableDistance;
+        this.targetProgress = Math.max(0, Math.min(1, rawProgress));
+      };
+      
+      window.addEventListener('scroll', this.scrollListener, { passive: true });
+      this.renderLoop();
+    });
   }
 
   ngOnDestroy() {
     if (this.animationFrameId !== null) {
       cancelAnimationFrame(this.animationFrameId);
+    }
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener);
     }
   }
 
@@ -73,39 +95,31 @@ export class Features implements AfterViewInit, OnDestroy {
 
     // Update the UI state based on current (interpolated) progress
     // Balanced the thresholds: 0.33 and 0.66 so each slide gets exactly 1/3 of the scroll.
+    let newFeature = this.activeFeature;
     if (this.currentProgress < 0.33) {
-      this.activeFeature = 1;
+      newFeature = 1;
     } else if (this.currentProgress < 0.66) {
-      this.activeFeature = 2;
+      newFeature = 2;
     } else if (this.currentProgress >= 0.66 && this.currentProgress <= 1) {
-      this.activeFeature = 3;
+      newFeature = 3;
     } else {
-      this.activeFeature = 0;
+      newFeature = 0;
     }
 
     // Edge case for hiding text when scrolled totally above
     if (this.currentProgress === 0 && this.targetProgress === 0 && this.sectionElement) {
       const rect = this.sectionElement.nativeElement.getBoundingClientRect();
       if (rect.top > window.innerHeight) {
-        this.activeFeature = 0;
+        newFeature = 0;
       }
+    }
+    
+    if (this.activeFeature !== newFeature) {
+      this.ngZone.run(() => {
+        this.activeFeature = newFeature;
+      });
     }
 
     this.animationFrameId = requestAnimationFrame(this.renderLoop);
-  }
-
-  @HostListener('window:scroll')
-  onScroll() {
-    if (!this.sectionElement) return;
-
-    const section = this.sectionElement.nativeElement;
-    const rect = section.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    
-    const scrollableDistance = section.offsetHeight - windowHeight;
-    const scrolled = -rect.top;
-
-    let rawProgress = scrolled / scrollableDistance;
-    this.targetProgress = Math.max(0, Math.min(1, rawProgress));
   }
 }

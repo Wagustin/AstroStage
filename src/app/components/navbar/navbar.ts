@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AudioService } from '../../services/audio.service';
 
@@ -8,10 +8,11 @@ import { AudioService } from '../../services/audio.service';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar implements OnInit {
+export class Navbar implements OnInit, OnDestroy {
   isLightTheme = false;
+  private mouseMoveListener!: (event: MouseEvent) => void;
 
-  constructor(private el: ElementRef, public audioService: AudioService) {}
+  constructor(private el: ElementRef, public audioService: AudioService, private ngZone: NgZone) {}
 
   ngOnInit() {
     // Check saved theme
@@ -19,6 +20,22 @@ export class Navbar implements OnInit {
     if (savedTheme === 'light') {
       this.isLightTheme = true;
       document.documentElement.classList.add('light-theme');
+    }
+
+    this.ngZone.runOutsideAngular(() => {
+      this.mouseMoveListener = (event: MouseEvent) => {
+        const x = event.clientX;
+        const y = event.clientY;
+        this.el.nativeElement.style.setProperty('--mouse-x', `${x}px`);
+        this.el.nativeElement.style.setProperty('--mouse-y', `${y}px`);
+      };
+      window.addEventListener('mousemove', this.mouseMoveListener, { passive: true });
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.mouseMoveListener) {
+      window.removeEventListener('mousemove', this.mouseMoveListener);
     }
   }
 
@@ -31,14 +48,6 @@ export class Navbar implements OnInit {
       document.documentElement.classList.remove('light-theme');
       localStorage.setItem('astrostage-theme', 'dark');
     }
-  }
-
-  @HostListener('mousemove', ['$event'])
-  onMouseMove(event: MouseEvent) {
-    const x = event.clientX;
-    const y = event.clientY;
-    this.el.nativeElement.style.setProperty('--mouse-x', `${x}px`);
-    this.el.nativeElement.style.setProperty('--mouse-y', `${y}px`);
   }
 
   isMenuOpen = false;
