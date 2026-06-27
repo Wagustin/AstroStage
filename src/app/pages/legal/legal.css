@@ -240,7 +240,7 @@ li {
 /* Audio Toggle */
 .container {
   --color: var(--text-color);
-  --size: 24px;
+  --size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;

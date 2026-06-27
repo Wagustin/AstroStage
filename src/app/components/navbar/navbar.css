@@ -59,6 +59,7 @@
   align-items: center;
   flex: 1;
   margin-left: 3rem;
+  gap: 2rem;
 }
 
 /* Hamburger - Hidden on desktop */
@@ -147,7 +148,7 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1.75rem;
 }
 
 /* Theme Toggle — adapted from Uiverse.io by andrew-demchenk0 */
@@ -324,7 +325,7 @@
 /* Audio Toggle */
 .container {
   --color: var(--text-primary);
-  --size: 24px;
+  --size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
