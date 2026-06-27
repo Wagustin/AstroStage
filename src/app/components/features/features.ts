@@ -57,10 +57,16 @@ export class Features implements AfterViewInit, OnDestroy {
 
     if (activeVid && !isNaN(activeVid.duration) && activeVid.duration > 0) {
       if (!activeVid.paused) activeVid.pause();
-      const targetTime = Math.min(this.currentProgress, 0.99) * activeVid.duration;
+      const rawTargetTime = Math.min(this.currentProgress, 0.99) * activeVid.duration;
       
-      // Update only if difference is significant to save rendering thread in Chrome
-      if (Math.abs(activeVid.currentTime - targetTime) > 0.015) {
+      // CHROME OPTIMIZATION: Snap to discrete 30fps frames (0.0333s)
+      // This prevents Chrome from attempting to sub-frame interpolate 60 times a second
+      const fps = 30;
+      const frameTime = 1 / fps;
+      const targetTime = Math.round(rawTargetTime / frameTime) * frameTime;
+      
+      // Update only if difference crosses a frame boundary
+      if (Math.abs(activeVid.currentTime - targetTime) >= frameTime - 0.001) {
         activeVid.currentTime = targetTime;
       }
     }

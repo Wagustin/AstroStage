@@ -1,16 +1,24 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AudioService {
   private backgroundAudio: HTMLAudioElement | null = null;
-  private isGlobalMutedSource = new Subject<boolean>();
+  public isMuted = new BehaviorSubject<boolean>(false);
   
   // Observable that other components (like Simulator) can subscribe to
-  isGlobalMuted$ = this.isGlobalMutedSource.asObservable();
+  isGlobalMuted$ = this.isMuted.asObservable();
+
+  toggleMute() {
+    const nextState = !this.isMuted.value;
+    this.isMuted.next(nextState);
+    if (this.backgroundAudio) {
+      this.backgroundAudio.muted = nextState;
+    }
+  }
 
   private hasStartedPlaying = false;
 
@@ -86,6 +94,6 @@ export class AudioService {
     }
 
     // Tell other components to mute their videos
-    this.isGlobalMutedSource.next(true);
+    this.isMuted.next(true);
   }
 }

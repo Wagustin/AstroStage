@@ -1,15 +1,17 @@
 import { Component, HostListener, ElementRef, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar implements OnInit {
   isLightTheme = false;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef, public audioService: AudioService) {}
 
   ngOnInit() {
     // Check saved theme
