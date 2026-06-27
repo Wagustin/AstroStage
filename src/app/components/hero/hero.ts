@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef } from '@angular/core';
+import { Component, HostListener, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-hero',
@@ -6,8 +6,18 @@ import { Component, HostListener, ElementRef } from '@angular/core';
   templateUrl: './hero.html',
   styleUrl: './hero.css',
 })
-export class Hero {
+export class Hero implements AfterViewInit {
+  @ViewChild('heroVideo') heroVideo!: ElementRef<HTMLVideoElement>;
+
   constructor(private el: ElementRef) {}
+
+  ngAfterViewInit() {
+    if (this.heroVideo) {
+      // Force play for aggressive browsers like Chrome
+      this.heroVideo.nativeElement.muted = true;
+      this.heroVideo.nativeElement.play().catch(e => console.log('Autoplay deferred by browser', e));
+    }
+  }
 
   @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
