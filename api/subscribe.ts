@@ -31,10 +31,10 @@ export default async function handler(req: any, res: any) {
 
   try {
     // Usar URL base fija y segura para evitar inyección de Host Header
-    const logoUrl = `https://astrostage.qzz.io/assets/logo-email-square.jpeg`;
+    const logoUrl = `https://astrostage.online/assets/logo-email-square.jpeg`;
 
     const { data, error } = await resend.emails.send({
-      from: 'AstroStage <sales-team@mail.astrostage.qzz.io>',
+      from: 'AstroStage <sales-team@mail.astrostage.online>',
       to: email,
       subject: '¡Bienvenido al futuro! Ya estás en la lista de AstroStage 🚀',
       html: `
