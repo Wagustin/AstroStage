@@ -18,14 +18,23 @@ export default async function handler(req: any, res: any) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
+  // Sanitizar el correo electrónico para prevenir inyección HTML
+  const escapeHtml = (unsafe: string) => {
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+  const safeEmail = escapeHtml(email);
+
   try {
-    // Determinar la URL base para cargar el logo desde la carpeta public/assets
-    const host = req.headers['x-forwarded-host'] || req.headers.host || 'astrostage.vercel.app';
-    const protocol = req.headers['x-forwarded-proto'] || 'https';
-    const logoUrl = `${protocol}://${host}/assets/logo-email-square.jpeg`;
+    // Usar URL base fija y segura para evitar inyección de Host Header
+    const logoUrl = `https://astrostage.us.kg/assets/logo-email-square.jpeg`;
 
     const { data, error } = await resend.emails.send({
-      from: 'AstroStage <sales-team@mail.astrostage.us.kg>', 
+      from: 'AstroStage <sales-team@mail.astrostage.us.kg>',
       to: email,
       subject: '¡Bienvenido al futuro! Ya estás en la lista de AstroStage 🚀',
       html: `
@@ -44,7 +53,7 @@ export default async function handler(req: any, res: any) {
             <h2 style="color: #00ffff; font-family: 'Outfit', Helvetica, sans-serif; font-size: 24px; margin-bottom: 16px; letter-spacing: 1px; font-weight: 800; text-transform: uppercase;">¡Gracias por unirte al proyecto!</h2>
             
             <p style="font-size: 16px; line-height: 1.6; color: #b3b3b3; text-align: left;">
-              Hola, pionero. Hemos registrado tu correo <strong>${email}</strong> exitosamente en nuestra lista de espera exclusiva.
+              Hola, pionero. Hemos registrado tu correo <strong>${safeEmail}</strong> exitosamente en nuestra lista de espera exclusiva.
             </p>
             
             <p style="font-size: 16px; line-height: 1.6; color: #b3b3b3; text-align: left;">
@@ -70,11 +79,13 @@ export default async function handler(req: any, res: any) {
     });
 
     if (error) {
-      return res.status(400).json({ error: error.message });
+      console.error('Error enviando correo con Resend:', error);
+      return res.status(400).json({ error: 'Error al procesar la solicitud de suscripción.' });
     }
 
     return res.status(200).json({ message: 'Suscripción exitosa, correo enviado.', data });
   } catch (error: any) {
-    return res.status(500).json({ error: 'Error interno del servidor.', details: error.message });
+    console.error('Error interno del servidor en endpoint de suscripción:', error);
+    return res.status(500).json({ error: 'Error interno del servidor.' });
   }
 }
