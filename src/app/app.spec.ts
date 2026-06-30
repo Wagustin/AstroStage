@@ -3,6 +3,15 @@ import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
+    // Mock IntersectionObserver
+    if (!globalThis.IntersectionObserver) {
+      globalThis.IntersectionObserver = class IntersectionObserver {
+        constructor() {}
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      } as any;
+    }
     await TestBed.configureTestingModule({
       imports: [App],
     }).compileComponents();
@@ -18,6 +27,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, AstroStage');
+    expect(compiled.querySelector('h1')?.textContent).toContain('máxima dimensión');
   });
 });

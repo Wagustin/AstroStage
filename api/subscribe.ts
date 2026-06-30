@@ -8,13 +8,16 @@ export default async function handler(req: any, res: any) {
 
   const apiKey = process.env['RESEND_API_KEY'];
   if (!apiKey) {
-    return res.status(500).json({ error: 'Falta configurar RESEND_API_KEY en Vercel.' });
+    // Security enhancement: Do not leak internal environment variable names
+    return res.status(500).json({ error: 'Falta configuración en el servidor.' });
   }
   const resend = new Resend(apiKey);
 
-  const { email } = req.body;
+  // Safely extract email from body
+  const email = req.body && req.body.email;
 
-  if (!email || !email.includes('@')) {
+  // Enhance input validation: Check type, length limit (DoS prevention), and basic format
+  if (!email || typeof email !== 'string' || email.length > 254 || !email.includes('@')) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
