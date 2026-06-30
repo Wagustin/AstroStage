@@ -36,12 +36,15 @@ export class AudioService {
     console.log('[AudioService] Audio initialized, attempting immediate play...');
     
     // Attempt immediate playback (often blocked by browsers)
-    this.backgroundAudio.play().then(() => {
-      console.log('[AudioService] Immediate autoplay succeeded!');
-      this.hasStartedPlaying = true;
-    }).catch(err => {
-      console.warn('[AudioService] Immediate autoplay blocked by browser policy. Waiting for user interaction...', err);
-    });
+    const playPromise = this.backgroundAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        console.log('[AudioService] Immediate autoplay succeeded!');
+        this.hasStartedPlaying = true;
+      }).catch(err => {
+        console.warn('[AudioService] Immediate autoplay blocked by browser policy. Waiting for user interaction...', err);
+      });
+    }
   }
 
   private setupInteractionListener() {
