@@ -15,7 +15,10 @@ export class Hero implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     if (this.heroVideo) {
       this.heroVideo.nativeElement.muted = true;
-      this.heroVideo.nativeElement.play().catch(e => console.log('Autoplay deferred by browser', e));
+      const playPromise = this.heroVideo.nativeElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((e: any) => console.log('Autoplay deferred by browser', e));
+      }
     }
 
     this.ngZone.runOutsideAngular(() => {

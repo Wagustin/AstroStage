@@ -82,7 +82,7 @@ export default async function handler(req: any, res: any) {
                       <table border="0" cellspacing="0" cellpadding="0" align="center" style="margin-bottom: 40px;">
                         <tr>
                           <td align="center" style="border-radius: 8px; background-color: #00ffff; box-shadow: 0 0 20px rgba(0, 255, 255, 0.25);">
-                            <a href="https://astrostage.online" target="_blank" style="font-family: 'Outfit', -apple-system, sans-serif; font-size: 15px; font-weight: 700; color: #000000; text-decoration: none; display: inline-block; padding: 14px 28px; border-radius: 8px; letter-spacing: 0.5px;">
+                            <a href="https://astrostage.online" target="_blank" rel="noopener noreferrer" style="font-family: 'Outfit', -apple-system, sans-serif; font-size: 15px; font-weight: 700; color: #000000; text-decoration: none; display: inline-block; padding: 14px 28px; border-radius: 8px; letter-spacing: 0.5px;">
                               Explorar AstroStage
                             </a>
                           </td>

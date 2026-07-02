@@ -36,12 +36,17 @@ export class AudioService {
     console.log('[AudioService] Audio initialized, attempting immediate play...');
     
     // Attempt immediate playback (often blocked by browsers)
-    this.backgroundAudio.play().then(() => {
-      console.log('[AudioService] Immediate autoplay succeeded!');
+    const playPromise = this.backgroundAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        console.log('[AudioService] Immediate autoplay succeeded!');
+        this.hasStartedPlaying = true;
+      }).catch(err => {
+        console.warn('[AudioService] Immediate autoplay blocked by browser policy. Waiting for user interaction...', err);
+      });
+    } else {
       this.hasStartedPlaying = true;
-    }).catch(err => {
-      console.warn('[AudioService] Immediate autoplay blocked by browser policy. Waiting for user interaction...', err);
-    });
+    }
   }
 
   private setupInteractionListener() {
@@ -50,12 +55,17 @@ export class AudioService {
       if (!this.hasStartedPlaying && this.backgroundAudio) {
         console.log('[AudioService] Interaction detected, attempting to play...');
         
-        this.backgroundAudio.play().then(() => {
-          console.log('[AudioService] Successfully started playing background audio.');
+        const userPlayPromise = this.backgroundAudio.play();
+        if (userPlayPromise !== undefined) {
+          userPlayPromise.then(() => {
+            console.log('[AudioService] Successfully started playing background audio.');
+            this.hasStartedPlaying = true;
+          }).catch(err => {
+            console.error('[AudioService] Audio autoplay blocked or failed:', err);
+          });
+        } else {
           this.hasStartedPlaying = true;
-        }).catch(err => {
-          console.error('[AudioService] Audio autoplay blocked or failed:', err);
-        });
+        }
         
         // Remove listeners once started
         window.removeEventListener('click', startAudio);
@@ -88,7 +98,10 @@ export class AudioService {
       
       // If it hasn't started playing yet due to no interaction, force it to start
       if (!this.hasStartedPlaying) {
-        this.backgroundAudio.play().catch(e => console.log(e));
+        const fallbackPlayPromise = this.backgroundAudio.play();
+        if (fallbackPlayPromise !== undefined) {
+            fallbackPlayPromise.catch(e => console.log(e));
+        }
         this.hasStartedPlaying = true;
       }
     }
