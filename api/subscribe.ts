@@ -14,8 +14,18 @@ export default async function handler(req: any, res: any) {
 
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Correo inválido o faltante.' });
+  // 🛡️ Sentinel: Validate input type, length limits (DoS), and valid email regex
+  if (!email || typeof email !== 'string') {
+    return res.status(400).json({ error: 'Correo faltante o tipo inválido.' });
+  }
+
+  if (email.length > 254) {
+    return res.status(400).json({ error: 'El correo excede la longitud máxima permitida.' });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: 'Formato de correo inválido.' });
   }
 
   // Sanitizar el correo electrónico para prevenir inyección HTML
