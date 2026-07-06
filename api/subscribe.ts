@@ -8,13 +8,21 @@ export default async function handler(req: any, res: any) {
 
   const apiKey = process.env['RESEND_API_KEY'];
   if (!apiKey) {
-    return res.status(500).json({ error: 'Falta configurar RESEND_API_KEY en Vercel.' });
+    // 🛡️ Sentinel: Return generic error, avoid leaking internal config details
+    console.error('RESEND_API_KEY is not configured.');
+    return res.status(500).json({ error: 'Error interno del servidor.' });
   }
   const resend = new Resend(apiKey);
 
+  // 🛡️ Sentinel: Validate body exists
+  if (!req.body) {
+    return res.status(400).json({ error: 'Solicitud inválida.' });
+  }
+
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
+  // 🛡️ Sentinel: Add type and length validation to prevent DoS/Type errors
+  if (!email || typeof email !== 'string' || email.length > 254 || !email.includes('@')) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
