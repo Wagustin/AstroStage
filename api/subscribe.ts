@@ -12,10 +12,16 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
+  // 🛡️ Sentinel: Validate req.body existence and type to prevent unhandled TypeErrors from raw requests
+  if (!req.body || typeof req.body !== 'object') {
+    return res.status(400).json({ error: 'Solicitud inválida. Se requiere un cuerpo JSON.' });
+  }
+
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Correo inválido o faltante.' });
+  // 🛡️ Sentinel: Validate email type and length (DoS prevention)
+  if (!email || typeof email !== 'string' || email.length > 254 || !email.includes('@')) {
+    return res.status(400).json({ error: 'Correo inválido, faltante, o demasiado largo.' });
   }
 
   // Sanitizar el correo electrónico para prevenir inyección HTML
