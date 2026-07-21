@@ -12,6 +12,11 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
+  // 🛡️ Sentinel: Ensure req.body exists and email is a string before accessing it
+  if (!req.body || typeof req.body.email !== 'string') {
+    return res.status(400).json({ error: 'Solicitud inválida. Se requiere un correo electrónico.' });
+  }
+
   const { email } = req.body;
 
   if (!email || !email.includes('@')) {
