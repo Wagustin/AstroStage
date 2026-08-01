@@ -12,9 +12,10 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
-  const { email } = req.body;
+  // 🛡️ Sentinel: Validate req.body and email type to prevent unhandled TypeErrors and crashes
+  const email = req.body?.email;
 
-  if (!email || !email.includes('@')) {
+  if (!email || typeof email !== 'string' || !email.includes('@')) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
