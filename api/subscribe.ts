@@ -12,9 +12,15 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
+  // 🛡️ Sentinel: Validate req.body to prevent unhandled TypeErrors and DoS via server crashes
+  if (!req.body || typeof req.body !== 'object') {
+    return res.status(400).json({ error: 'Solicitud inválida. Se esperaba un cuerpo de petición válido.' });
+  }
+
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
+  // 🛡️ Sentinel: Ensure email is a string to prevent unexpected behaviour when checking includes('@')
+  if (!email || typeof email !== 'string' || !email.includes('@')) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
