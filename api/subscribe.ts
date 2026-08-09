@@ -12,9 +12,16 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
+  // Security Enhancement: Validate req.body exists and is an object before destructuring
+  // to prevent unhandled TypeErrors if req.body is undefined or null (Server Crashes/500 errors).
+  if (!req.body || typeof req.body !== 'object') {
+    return res.status(400).json({ error: 'Cuerpo de la solicitud inválido o faltante.' });
+  }
+
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
+  // Security Enhancement: Validate email type is string before calling string methods like .includes
+  if (!email || typeof email !== 'string' || !email.includes('@')) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
