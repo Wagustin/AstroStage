@@ -1,3 +1,8 @@
+## 2026-08-12 - Unhandled Type Error & Server Crash (DoS) via Raw Request Body
+**Vulnerability:** The API endpoint `api/subscribe.ts` accepted a raw request object (`req.body`) and directly destructured and invoked methods like `.includes('@')` on the `email` field without validating its type. If an attacker sent a JSON payload where `email` was a number or boolean, it would trigger a `TypeError: email.includes is not a function`, causing an unhandled exception and crashing the server (500 Internal Server Error/Denial of Service).
+**Learning:** Vercel serverless functions pass raw request bodies. We cannot assume the structure or types of incoming JSON payloads. Trusting input types directly can lead to application crashes.
+**Prevention:** Always validate that `req.body` exists and is an object, and rigorously type-check specific properties (e.g., `typeof email === 'string'`) before invoking string-specific or array-specific methods.
+
 ## 2024-06-29 - Email HTML Injection & Info Leakage
 **Vulnerability:** The API endpoint `api/subscribe.ts` was vulnerable to HTML Injection because it embedded the user-provided `email` directly into the HTML of the outgoing email without escaping. Additionally, it leaked internal server error messages to the client and trusted the `Host` header for generating the logo URL (Host Header Injection).
 **Learning:** Even when sending emails, user input must be sanitized. Email clients render HTML, making them susceptible to injection attacks. Trusting user-provided headers like `Host` can lead to SSRF or phishing vectors in emails. Finally, exposing `error.message` to the client violates the "fail securely" principle.
