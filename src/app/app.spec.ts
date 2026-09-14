@@ -10,7 +10,9 @@ describe('App', () => {
         disconnect() {}
         observe() {}
         unobserve() {}
-        takeRecords() { return []; }
+        takeRecords() {
+          return [];
+        }
       } as unknown as typeof globalThis.IntersectionObserver;
     }
   });
@@ -32,5 +34,12 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('La música en sumáxima dimensión');
+  });
+
+  it('should initialize cursor canvas without errors', async () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 });
