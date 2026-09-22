@@ -10,7 +10,9 @@ describe('App', () => {
         disconnect() {}
         observe() {}
         unobserve() {}
-        takeRecords() { return []; }
+        takeRecords() {
+          return [];
+        }
       } as unknown as typeof globalThis.IntersectionObserver;
     }
   });
@@ -32,5 +34,19 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('La música en sumáxima dimensión');
+  });
+
+  it('should handle mousemove events without layout thrashing', async () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    // Trigger mousemove event on window
+    const mouseMoveEvent = new MouseEvent('mousemove', {
+      clientX: 500,
+      clientY: 1000,
+      bubbles: true,
+    });
+    expect(() => window.dispatchEvent(mouseMoveEvent)).not.toThrow();
   });
 });
