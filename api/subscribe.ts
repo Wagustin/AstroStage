@@ -12,9 +12,9 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
-  const { email } = req.body;
+  const { email } = req.body || {};
 
-  if (!email || !email.includes('@')) {
+  if (!email || typeof email !== 'string' || !email.includes('@') || email.length > 254) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
