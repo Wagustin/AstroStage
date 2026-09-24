@@ -19,20 +19,26 @@ import { Router } from '@angular/router';
   styleUrl: './app.css',
 })
 export class App implements AfterViewInit {
-  constructor(private audioService: AudioService, public router: Router) {}
+  constructor(
+    private audioService: AudioService,
+    public router: Router,
+  ) {}
 
   ngAfterViewInit() {
     // Scroll Reveal Observer
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.05 });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05 },
+    );
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
     // Cursor Trail (Canvas)
     this.initCursorTrail();
@@ -44,28 +50,58 @@ export class App implements AfterViewInit {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
+    // Cache element reference and top position to prevent layout thrashing in high-frequency mousemove listener
+    let expSection: HTMLElement | null = document.getElementById('experiencia');
+    let expSectionTop = expSection ? expSection.getBoundingClientRect().top + window.scrollY : 0;
 
-    const particles: { x: number, y: number, life: number, size: number, vx: number, vy: number }[] = [];
-    
+    const updateExpPos = () => {
+      if (!expSection || !expSection.isConnected) {
+        expSection = document.getElementById('experiencia');
+      }
+      if (expSection) {
+        expSectionTop = expSection.getBoundingClientRect().top + window.scrollY;
+      }
+    };
+
+    window.addEventListener(
+      'resize',
+      () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        updateExpPos();
+      },
+      { passive: true },
+    );
+
+    window.addEventListener('scroll', updateExpPos, { passive: true });
+
+    const particles: {
+      x: number;
+      y: number;
+      life: number;
+      size: number;
+      vx: number;
+      vy: number;
+    }[] = [];
+
     let mouseX = -100;
     let mouseY = -100;
-    
+
     window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      
-      const expSection = document.getElementById('experiencia');
+
+      if (!expSection || !expSection.isConnected) {
+        updateExpPos();
+      }
+
       if (expSection) {
-        const rect = expSection.getBoundingClientRect();
-        // Skip emitting particles if mouse is vertically above the top of the Experiencia section
-        if (mouseY < rect.top) {
+        // Skip emitting particles if mouse is vertically above top of Experiencia section
+        // Uses cached position minus scrollY to avoid layout thrashing and DOM queries
+        if (mouseY < expSectionTop - window.scrollY) {
           return;
         }
       }
@@ -77,30 +113,30 @@ export class App implements AfterViewInit {
         life: 1,
         size: Math.random() * 2 + 0.5,
         vx: (Math.random() - 0.5) * 0.2,
-        vy: (Math.random() - 0.5) * 0.2 + 0.1
+        vy: (Math.random() - 0.5) * 0.2 + 0.1,
       });
     });
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      
+
       // Setup blur and glowing effect for the elegant risograph/stardust look
       ctx.shadowBlur = 8;
       ctx.shadowColor = 'rgba(0, 255, 255, 0.4)';
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.4)'; 
-      
+      ctx.fillStyle = 'rgba(0, 255, 255, 0.4)';
+
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
         p.life -= 0.015; // fade slightly slower
-        
+
         if (p.life <= 0) {
           particles.splice(i, 1);
           i--;
           continue;
         }
-        
+
         ctx.globalAlpha = p.life * 0.5; // lower max opacity for elegance
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
