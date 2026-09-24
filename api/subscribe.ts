@@ -12,9 +12,15 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
+  // Security: Validate req.body exists and is an object before destructuring
+  if (!req.body || typeof req.body !== 'object') {
+    return res.status(400).json({ error: 'Solicitud inválida. Se requiere un cuerpo JSON.' });
+  }
+
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
+  // Security: Ensure email is a string before calling string methods like .includes
+  if (typeof email !== 'string' || !email || !email.includes('@')) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
