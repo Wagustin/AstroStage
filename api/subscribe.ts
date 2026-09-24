@@ -12,9 +12,15 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
+  // Validate that req.body exists and is an object to prevent TypeErrors
+  if (!req.body || typeof req.body !== 'object') {
+    return res.status(400).json({ error: 'Falta el cuerpo de la solicitud o formato incorrecto.' });
+  }
+
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
+  // Validate that email is a string before calling string methods to prevent TypeErrors
+  if (!email || typeof email !== 'string' || !email.includes('@')) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
