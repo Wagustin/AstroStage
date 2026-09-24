@@ -12,9 +12,16 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
+  // Security: Validate req.body exists and is an object before destructuring
+  // to prevent unhandled TypeErrors and Server Crashes (500 errors).
+  if (!req.body || typeof req.body !== 'object') {
+    return res.status(400).json({ error: 'Solicitud inválida.' });
+  }
+
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
+  // Security: Validate email type and length to prevent DoS/resource exhaustion
+  if (!email || typeof email !== 'string' || email.length > 254 || !email.includes('@')) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
   }
 
