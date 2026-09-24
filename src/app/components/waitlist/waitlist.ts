@@ -19,13 +19,13 @@ export class Waitlist {
   errorMessage = '';
 
   constructor(
-    private fb: FormBuilder, 
-    private http: HttpClient, 
+    private fb: FormBuilder,
+    private http: HttpClient,
     private el: ElementRef,
-    private audioService: AudioService
+    private audioService: AudioService,
   ) {
     this.waitlistForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
@@ -40,35 +40,32 @@ export class Waitlist {
   onSubmit() {
     this.submitted = true;
     this.errorMessage = '';
-    
+
     if (this.waitlistForm.valid) {
       this.loading = true;
       const email = this.waitlistForm.value.email;
-      
+
       this.http.post('/api/subscribe', { email }).subscribe({
         next: () => {
           this.success = true;
           this.waitlistForm.reset();
           this.submitted = false;
           this.loading = false;
-          
+
           this.audioService.registerUser();
-          
+
           setTimeout(() => {
             this.success = false;
           }, 4000);
         },
         error: (err) => {
           console.error('Error suscribiendo:', err);
-          let backendError = err.error?.error || err.error?.details || err.message;
-          if (typeof backendError === 'object') {
-             backendError = JSON.stringify(backendError);
-          }
-          this.errorMessage = backendError ? `Error: ${backendError}` : 'Hubo un problema al intentar unirte a la lista. Por favor, intenta de nuevo.';
+          // Security fix: Use generic user-friendly error message to prevent information leakage
+          this.errorMessage =
+            'Hubo un problema al intentar unirte a la lista. Por favor, intenta de nuevo.';
           this.loading = false;
-        }
+        },
       });
     }
   }
 }
-
