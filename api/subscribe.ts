@@ -12,10 +12,20 @@ export default async function handler(req: any, res: any) {
   }
   const resend = new Resend(apiKey);
 
+  if (!req.body || typeof req.body !== 'object') {
+    return res.status(400).json({ error: 'Cuerpo de solicitud inválido.' });
+  }
+
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
+  // Validate email presence, type, length (DoS prevention), and format
+  if (!email || typeof email !== 'string' || email.length > 254) {
     return res.status(400).json({ error: 'Correo inválido o faltante.' });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: 'Formato de correo inválido.' });
   }
 
   // Sanitizar el correo electrónico para prevenir inyección HTML
