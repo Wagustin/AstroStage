@@ -1,3 +1,8 @@
+## 2026-10-28 - Information Disclosure in Frontend Error Responses
+**Vulnerability:** The Waitlist component in `src/app/components/waitlist/waitlist.ts` reflected raw HTTP backend error objects, details, or error messages directly to end-users via `this.errorMessage` (CWE-209).
+**Learning:** Displaying raw backend error messages or exception details in UI error messages can expose sensitive system details, internal paths, database info, or third-party API details to end-users and attackers.
+**Prevention:** Always display static, generic user-friendly error messages on the frontend, while keeping technical error details isolated to server-side logs or browser console logs if appropriate.
+
 ## 2024-06-29 - Email HTML Injection & Info Leakage
 **Vulnerability:** The API endpoint `api/subscribe.ts` was vulnerable to HTML Injection because it embedded the user-provided `email` directly into the HTML of the outgoing email without escaping. Additionally, it leaked internal server error messages to the client and trusted the `Host` header for generating the logo URL (Host Header Injection).
 **Learning:** Even when sending emails, user input must be sanitized. Email clients render HTML, making them susceptible to injection attacks. Trusting user-provided headers like `Host` can lead to SSRF or phishing vectors in emails. Finally, exposing `error.message` to the client violates the "fail securely" principle.
