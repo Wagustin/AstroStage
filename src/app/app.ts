@@ -56,16 +56,26 @@ export class App implements AfterViewInit {
     
     let mouseX = -100;
     let mouseY = -100;
-    
+
+    // Cache Experiencia section reference and vertical position to avoid DOM querying and layout thrashing
+    const expSection = document.getElementById('experiencia');
+    let expTop = 0;
+    const updateExpTop = () => {
+      if (expSection) {
+        expTop = expSection.getBoundingClientRect().top;
+      }
+    };
+    updateExpTop();
+    window.addEventListener('scroll', updateExpTop, { passive: true });
+    window.addEventListener('resize', updateExpTop, { passive: true });
+
     window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      
-      const expSection = document.getElementById('experiencia');
+
       if (expSection) {
-        const rect = expSection.getBoundingClientRect();
         // Skip emitting particles if mouse is vertically above the top of the Experiencia section
-        if (mouseY < rect.top) {
+        if (mouseY < expTop) {
           return;
         }
       }
