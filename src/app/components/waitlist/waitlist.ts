@@ -60,7 +60,8 @@ export class Waitlist {
         },
         error: (err) => {
           console.error('Error suscribiendo:', err);
-          // Security: Avoid exposing internal backend error messages or stack traces to users.
+          // Security (CWE-209 / CWE-200): Prevent exposure of internal backend error details,
+          // database messages, or server stack traces to users by using a generic message.
           this.errorMessage =
             'Hubo un problema al intentar unirte a la lista. Por favor, intenta de nuevo.';
           this.loading = false;
