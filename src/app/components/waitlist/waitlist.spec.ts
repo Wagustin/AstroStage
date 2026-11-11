@@ -65,7 +65,10 @@ describe('Waitlist Component', () => {
     const req = httpMock.expectOne('/api/subscribe');
     // Simulate backend leaking sensitive DB or environment details
     req.flush(
-      { error: 'Postgres connection failed: password=secret at 10.0.0.1' },
+      {
+        error: 'Postgres connection failed: password=secret at 10.0.0.1',
+        details: 'Stack trace at /app/api/subscribe.ts:42',
+      },
       { status: 500, statusText: 'Internal Server Error' },
     );
 
@@ -75,5 +78,6 @@ describe('Waitlist Component', () => {
     );
     expect(component.errorMessage).not.toContain('Postgres');
     expect(component.errorMessage).not.toContain('secret');
+    expect(component.errorMessage).not.toContain('Stack trace');
   });
 });
